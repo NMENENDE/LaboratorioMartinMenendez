@@ -57,23 +57,148 @@
 <section id="lab" class="section"><h2 class="moduleTitle">Laboratorio Técnico</h2><div class="card"><div class="notice">Base de conocimiento Toyota. Buscá por problema, modelo, solución o técnico.</div><br><div class="form twoCol"><input id="labModelo" placeholder="Modelo"><input id="labProblema" placeholder="Problema"><textarea id="labDiag" placeholder="Diagnóstico"></textarea><textarea id="labSol" placeholder="Solución"></textarea><input id="labTecnico" placeholder="Técnico"><input id="labRep" placeholder="Reparaciones asociadas"></div><div class="actions"><button class="btn primary" onclick="saveLab()">Agregar / Guardar</button><button class="btn danger" onclick="del('lab')">Eliminar</button><button class="btn clean" onclick="clearLab()">Limpiar</button></div><input class="search" id="searchLab" oninput="render()" placeholder="Buscar caso"><table><thead><tr><th>Modelo</th><th>Problema</th><th>Diagnóstico</th><th>Solución</th><th>Técnico</th><th>Acción</th></tr></thead><tbody id="labTable"></tbody></table></div></section>
 
 <section id="kpis" class="section"><h2 class="moduleTitle">Reportes / KPIs</h2><div class="grid two"><div class="card"><div class="head"><h3>Productividad</h3></div><div id="kpiOperarios"></div></div><div class="card"><div class="head"><h3>Indicadores</h3></div><div id="kpiTecnicos"></div></div></div></section>
-<datalist id="repuestosList"></datalist><div class="footer">© 2026 Laboratorio Toyota Martín Menéndez · V7.2 Cloud Supabase</div>
+<section id="usuariosSec" class="section devOnly"><h2 class="moduleTitle">Usuarios del Sistema</h2><div class="card"><div class="notice">Módulo visible solo para el rol Dueño Desarrollador. Los usuarios reales se administran desde Supabase Authentication; esta tabla muestra los perfiles y roles cargados en public.usuarios.</div><br><table><thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Activo</th></tr></thead><tbody id="usuariosTable"></tbody></table></div></section>
+
+<section id="configSec" class="section devOnly"><h2 class="moduleTitle">Configuración</h2><div class="card"><div class="notice"><b>Laboratorio Toyota Martín Menéndez Cloud Edition.</b><br>Estado: conectado a Supabase. Base: clientes, vehículos, órdenes de trabajo, inventario, compras, finanzas, personal, laboratorio técnico y usuarios.</div></div></section>
+
+<datalist id="repuestosList"></datalist><div class="footer">© 2026 Laboratorio Toyota Martín Menéndez · V8.1 Login Fix</div>
 </main>
 </div>
 <div class="toast" id="toast"></div>
 <script>
 const SUPABASE_URL='https://kknwzyxuhwovwqnceapo.supabase.co';
 const SUPABASE_KEY='sb_publishable_WRooiqX5W84G1HMncD0zsA_L8l4V3oB';
-const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
+  }
+});
 let currentUser=null,currentProfile=null;
-function roleLabel(r){return (r||'').replaceAll('_',' ').replace('dueño','Dueño').replace('desarrollador','Desarrollador')}
-async function login(){loginError.textContent='';const email=loginEmail.value.trim(),password=loginPassword.value;const {data,error}=await db.auth.signInWithPassword({email,password});if(error){loginError.textContent='Email o contraseña incorrectos';return}currentUser=data.user;await startApp()}
-async function logout(){await db.auth.signOut();currentUser=null;currentProfile=null;appRoot.classList.add('locked');loginScreen.style.display='grid';}
-async function getProfile(){if(!currentUser)return null;let {data,error}=await db.from('usuarios').select('*').eq('id',currentUser.id).maybeSingle();if(error||!data){return {id:currentUser.id,email:currentUser.email,nombre:currentUser.email,rol:'usuario',activo:true}}return data}
-function applyRole(){const rol=currentProfile?.rol||'usuario';document.body.classList.toggle('developer',rol==='dueño_desarrollador');userName.textContent=currentProfile?.nombre||currentUser?.email||'Usuario';userRole.textContent=roleLabel(rol);}
-async function startApp(){currentProfile=await getProfile();if(currentProfile && currentProfile.activo===false){loginError.textContent='Usuario desactivado';await db.auth.signOut();return}loginScreen.style.display='none';appRoot.classList.remove('locked');applyRole();await loadAll()}
-db.auth.getSession().then(async ({data})=>{if(data.session?.user){currentUser=data.session.user;await startApp()}else{loginScreen.style.display='grid';appRoot.classList.add('locked')}});
-db.auth.onAuthStateChange(async (event,session)=>{if(event==='SIGNED_OUT'){appRoot.classList.add('locked');loginScreen.style.display='grid'}else if(session?.user && !currentUser){currentUser=session.user;await startApp()}});
+
+function el(id){ return document.getElementById(id); }
+function roleLabel(r){
+  const value = String(r || 'usuario');
+  if(value === 'dueño_desarrollador') return 'Dueño Desarrollador';
+  if(value === 'dueño') return 'Dueño';
+  return value.replaceAll('_',' ');
+}
+function setLoginError(message){
+  const box = el('loginError');
+  if(box) box.textContent = message || '';
+}
+function setLoginLoading(isLoading){
+  const btn = document.querySelector('.loginCard .btn.primary');
+  if(!btn) return;
+  btn.disabled = !!isLoading;
+  btn.textContent = isLoading ? 'Ingresando...' : 'Ingresar';
+}
+
+async function login(){
+  setLoginError('');
+  setLoginLoading(true);
+  try{
+    const email = el('loginEmail').value.trim();
+    const password = el('loginPassword').value;
+    if(!email || !password){
+      setLoginError('Ingresá email y contraseña.');
+      return;
+    }
+    const {data,error}=await db.auth.signInWithPassword({email,password});
+    if(error){
+      console.error('Error login Supabase:', error);
+      setLoginError(error.message || 'Email o contraseña incorrectos.');
+      return;
+    }
+    currentUser=data.user;
+    await startApp();
+  }catch(err){
+    console.error('Error inesperado en login:', err);
+    setLoginError(err.message || 'No se pudo iniciar sesión.');
+  }finally{
+    setLoginLoading(false);
+  }
+}
+
+async function logout(){
+  await db.auth.signOut();
+  currentUser=null;
+  currentProfile=null;
+  el('appRoot').classList.add('locked');
+  el('loginScreen').style.display='grid';
+}
+
+async function getProfile(){
+  if(!currentUser) return null;
+  const {data,error}=await db
+    .from('usuarios')
+    .select('id,email,nombre,rol,activo')
+    .eq('id',currentUser.id)
+    .maybeSingle();
+
+  if(error){
+    console.error('Error leyendo perfil usuarios:', error);
+    throw new Error('Login correcto, pero no se pudo leer el perfil del usuario. Revisar tabla usuarios/RLS.');
+  }
+  if(!data){
+    throw new Error('Login correcto, pero este usuario no tiene perfil/rol cargado en la tabla usuarios.');
+  }
+  return data;
+}
+
+function applyRole(){
+  const rol=currentProfile?.rol||'usuario';
+  document.body.classList.toggle('developer',rol==='dueño_desarrollador');
+  el('userName').textContent=currentProfile?.nombre||currentUser?.email||'Usuario';
+  el('userRole').textContent=roleLabel(rol);
+}
+
+async function startApp(){
+  try{
+    currentProfile=await getProfile();
+    if(currentProfile && currentProfile.activo===false){
+      setLoginError('Usuario desactivado.');
+      await db.auth.signOut();
+      return;
+    }
+    el('loginScreen').style.display='none';
+    el('appRoot').classList.remove('locked');
+    applyRole();
+    await loadAll();
+  }catch(err){
+    console.error('Error startApp:', err);
+    setLoginError(err.message || 'No se pudo iniciar la aplicación.');
+    el('appRoot').classList.add('locked');
+    el('loginScreen').style.display='grid';
+    await db.auth.signOut();
+  }
+}
+
+async function initAuth(){
+  const {data,error}=await db.auth.getSession();
+  if(error) console.error('Error getSession:', error);
+  if(data?.session?.user){
+    currentUser=data.session.user;
+    await startApp();
+  }else{
+    el('loginScreen').style.display='grid';
+    el('appRoot').classList.add('locked');
+  }
+}
+
+db.auth.onAuthStateChange(async (event,session)=>{
+  if(event==='SIGNED_OUT'){
+    el('appRoot').classList.add('locked');
+    el('loginScreen').style.display='grid';
+  }
+});
+
+document.addEventListener('DOMContentLoaded',()=>{
+  el('loginPassword')?.addEventListener('keydown',(e)=>{ if(e.key==='Enter') login(); });
+  el('loginEmail')?.addEventListener('keydown',(e)=>{ if(e.key==='Enter') login(); });
+  initAuth();
+});
 const $=id=>document.getElementById(id), fmt=n=>'$ '+Math.round(+n||0).toLocaleString('es-AR');
 let data={clientes:[],vehiculos:[],ot:[],inv:[],per:[],compras:[],fin:[],lab:[]};
 let edit={clientes:null,vehiculos:null,ot:null,inv:null,per:null,compras:null,fin:null,lab:null};
