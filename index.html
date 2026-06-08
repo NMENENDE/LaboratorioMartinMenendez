@@ -91,11 +91,11 @@
 <div class="grid three" style="margin-top:9px"><div class="card"><div class="head"><h3>Problemas frecuentes</h3></div><div id="fallas"></div></div><div class="card"><div class="head"><h3>Inventario</h3></div><div class="pillBox" id="invPills"></div><div id="reminders" style="margin-top:8px"></div></div><div class="card"><div class="head"><h3>Finanzas</h3></div><div id="finStatus"></div></div></div>
 </section>
 
-<section id="clientes" class="section"><h2 class="moduleTitle">Clientes</h2><div class="card"><div class="form five"><input id="cliNombre" placeholder="Nombre / razón social"><input id="cliDni" placeholder="DNI / CUIT"><input id="cliTel" placeholder="Teléfono / WhatsApp"><input id="cliMail" placeholder="Email"><input id="cliDir" placeholder="Dirección"></div><div class="form twoCol"><textarea id="cliObs" placeholder="Observaciones"></textarea></div><div class="actions"><button class="btn primary" onclick="saveCliente()">Agregar / Guardar</button><button class="btn danger" onclick="del('clientes')">Eliminar</button><button class="btn clean" onclick="clearCliente()">Limpiar</button></div><input class="search" id="searchClientes" oninput="render()" placeholder="Buscar cliente"><table><thead><tr><th>Cliente</th><th>DNI/CUIT</th><th>Teléfono</th><th>Email</th><th>Dirección</th><th>Vehículos</th><th>Acción</th></tr></thead><tbody id="clientesTable"></tbody></table></div></section>
+<section id="clientes" class="section"><h2 class="moduleTitle">Clientes y Vehículos</h2><div class="card"><div class="notice"><b>Carga unificada:</b> cargá el cliente y, si corresponde, el vehículo en el mismo paso. El vehículo queda asociado automáticamente al cliente.</div><br><div class="form five"><input id="cliNombre" placeholder="Nombre / razón social"><input id="cliDni" placeholder="DNI / CUIT"><input id="cliTel" placeholder="Teléfono / WhatsApp"><input id="cliMail" placeholder="Email"><input id="cliDir" placeholder="Dirección"></div><div class="form twoCol"><textarea id="cliObs" placeholder="Observaciones del cliente"></textarea></div><div class="vehInfoBox"><div class="vehInfoTitle">Vehículo asociado al cliente</div><div class="form five"><input id="cliVehDominio" placeholder="Dominio / patente"><input id="cliVehModelo" placeholder="Modelo"><input id="cliVehVersion" placeholder="Versión / motor"><input id="cliVehAnio" type="number" placeholder="Año"><input id="cliVehKm" type="number" placeholder="Kilometraje"><input id="cliVehVin" placeholder="VIN / chasis"><input id="cliVehComb" placeholder="Combustible"><input id="cliVehObs" placeholder="Observaciones del vehículo"></div></div><div class="actions"><button class="btn primary" onclick="saveClienteVehiculo()">Guardar cliente + vehículo</button><button class="btn" onclick="saveCliente()">Guardar solo cliente</button><button class="btn danger" onclick="del('clientes')">Eliminar cliente</button><button class="btn clean" onclick="clearCliente()">Limpiar</button></div><input class="search" id="searchClientes" oninput="render()" placeholder="Buscar cliente, DNI, teléfono, vehículo o dominio"><table><thead><tr><th>Cliente</th><th>DNI/CUIT</th><th>Teléfono</th><th>Email</th><th>Dirección</th><th>Vehículos</th><th>Acción</th></tr></thead><tbody id="clientesTable"></tbody></table></div></section>
 
 <section id="vehiculos" class="section"><h2 class="moduleTitle">Vehículos</h2><div class="card"><div class="form five"><select id="vehCliente"></select><input id="vehDominio" placeholder="Dominio"><input id="vehModelo" placeholder="Modelo Toyota"><input id="vehVersion" placeholder="Versión / motor"><input id="vehAnio" type="number" placeholder="Año"><input id="vehKm" type="number" placeholder="Kilometraje"><input id="vehVin" placeholder="VIN / chasis"><input id="vehComb" placeholder="Combustible"><input id="vehObs" placeholder="Observaciones"></div><div class="actions"><button class="btn primary" onclick="saveVehiculo()">Agregar / Guardar</button><button class="btn danger" onclick="del('vehiculos')">Eliminar</button><button class="btn clean" onclick="clearVehiculo()">Limpiar</button></div><input class="search" id="searchVehiculos" oninput="render()" placeholder="Buscar vehículo"><table><thead><tr><th>Cliente</th><th>Dominio</th><th>Modelo</th><th>Versión</th><th>Año</th><th>Km</th><th>Acción</th></tr></thead><tbody id="vehiculosTable"></tbody></table></div></section>
 
-<section id="ot" class="section"><h2 class="moduleTitle">Órdenes de Trabajo</h2><div class="card"><div class="form five"><input id="otNumero" placeholder="Número OT automático"><select id="otCliente"></select><select id="otVehiculo"></select><input id="otTecnicos" placeholder="Técnico/s separados por coma"><select id="otEstado"><option>Diagnóstico</option><option>Presupuestado</option><option>Aprobado</option><option>En reparación</option><option>Esperando repuestos</option><option>Control de calidad</option><option>Finalizado</option><option>Entregado</option></select><input id="otIngreso" type="date"><input id="otEntrega" type="date"><input id="otHoras" type="number" placeholder="Horas reales"><input id="otMonto" type="number" placeholder="Monto facturado"><input id="otReparaciones" placeholder="Reparaciones múltiples"><input id="otRepuestos" type="hidden"></div><div class="partsBox"><div class="partsTitle"><b>Repuestos de la OT</b><span class="partsHint">Buscá desde inventario, indicá cantidad y agregalo a la orden</span></div><div class="partsGrid"><input id="otRepSearch" list="repuestosList" placeholder="Buscar repuesto por nombre, categoría o proveedor"><input id="otRepCant" type="number" min="1" value="1" placeholder="Cantidad"><button class="btn" onclick="addOtPart()" type="button">Agregar repuesto</button></div><table class="partsTable"><thead><tr><th>Repuesto</th><th>Stock</th><th>Cant.</th><th>Compra</th><th>Venta</th><th>Subtotal</th><th>Acción</th></tr></thead><tbody id="otPartsTable"><tr><td colspan="7">Sin repuestos seleccionados</td></tr></tbody></table><div class="partsTotals"><span>Costo: <b id="partsCost">$0</b></span><span>Venta: <b id="partsSale">$0</b></span></div></div><div class="form twoCol"><textarea id="otObs" placeholder="Observaciones"></textarea></div><div class="actions"><button class="btn primary" onclick="saveOT()">Agregar / Guardar</button><button class="btn" onclick="generarPresupuestoDesdeOT()" type="button">Generar presupuesto</button><button class="btn danger" onclick="del('ot')">Eliminar</button><button class="btn clean" onclick="clearOT()">Limpiar</button></div><input class="search" id="searchOT" oninput="render()" placeholder="Buscar OT"><div class="kanban" id="kanbanOT"></div><br><table><thead><tr><th>OT</th><th>Cliente</th><th>Vehículo</th><th>Estado</th><th>Reparaciones</th><th>Técnico/s</th><th>Monto</th><th>Acción</th></tr></thead><tbody id="otTable"></tbody></table></div></section>
+<section id="ot" class="section"><h2 class="moduleTitle">Órdenes de Trabajo</h2><div class="card"><div class="form five"><input id="otNumero" placeholder="Número OT automático"><select id="otCliente"></select><select id="otVehiculo"></select><input id="otTecnicos" placeholder="Técnico/s separados por coma"><select id="otEstado"><option>Diagnóstico</option><option>Presupuestado</option><option>Aprobado</option><option>En reparación</option><option>Esperando repuestos</option><option>Control de calidad</option><option>Finalizado</option><option>Entregado</option></select><input id="otIngreso" type="date"><input id="otEntrega" type="date"><input id="otHoras" type="number" placeholder="Horas reales"><input id="otMonto" type="number" placeholder="Mano de obra"><input id="otReparaciones" placeholder="Reparaciones múltiples"><input id="otRepuestos" type="hidden"></div><div class="partsBox"><div class="partsTitle"><b>Repuestos de la OT</b><span class="partsHint">Buscá desde inventario, indicá cantidad y agregalo a la orden</span></div><div class="partsGrid"><input id="otRepSearch" list="repuestosList" placeholder="Buscar repuesto por nombre, categoría o proveedor"><input id="otRepCant" type="number" min="1" value="1" placeholder="Cantidad"><button class="btn" onclick="addOtPart()" type="button">Agregar repuesto</button></div><table class="partsTable"><thead><tr><th>Repuesto</th><th>Stock</th><th>Cant.</th><th>Compra</th><th>Venta</th><th>Subtotal</th><th>Acción</th></tr></thead><tbody id="otPartsTable"><tr><td colspan="7">Sin repuestos seleccionados</td></tr></tbody></table><div class="partsTotals"><span>Costo: <b id="partsCost">$0</b></span><span>Repuestos venta: <b id="partsSale">$0</b></span><span>Total OT: <b id="otGrandTotal">$0</b></span></div></div><div class="form twoCol"><textarea id="otObs" placeholder="Observaciones"></textarea></div><div class="actions"><button class="btn primary" onclick="saveOT()">Agregar / Guardar</button><button class="btn" onclick="generarPresupuestoDesdeOT()" type="button">Generar presupuesto</button><button class="btn danger" onclick="del('ot')">Eliminar</button><button class="btn clean" onclick="clearOT()">Limpiar</button></div><input class="search" id="searchOT" oninput="render()" placeholder="Buscar OT"><div class="kanban" id="kanbanOT"></div><br><table><thead><tr><th>OT</th><th>Cliente</th><th>Vehículo</th><th>Estado</th><th>Reparaciones</th><th>Técnico/s</th><th>Total OT</th><th>Acción</th></tr></thead><tbody id="otTable"></tbody></table></div></section>
 
 <section id="inv" class="section"><h2 class="moduleTitle">Inventario</h2><div class="card"><div class="form"><input id="invProducto" placeholder="Producto"><input id="invCat" placeholder="Categoría"><input id="invStock" type="number" placeholder="Stock"><input id="invMin" type="number" placeholder="Stock mínimo"><input id="invCompra" type="number" placeholder="Precio compra"><input id="invVenta" type="number" placeholder="Venta +30%"><input id="invProv" placeholder="Proveedor"><input id="invUbi" placeholder="Ubicación"></div><div class="actions"><button class="btn primary" onclick="saveInv()">Agregar / Guardar</button><button class="btn danger" onclick="del('inv')">Eliminar</button><button class="btn clean" onclick="clearInv()">Limpiar</button></div><input class="search" id="searchInv" oninput="render()" placeholder="Buscar inventario"><table><thead><tr><th>Producto</th><th>Categoría</th><th>Stock</th><th>Mín.</th><th>Compra</th><th>Venta</th><th>Proveedor</th><th>Acción</th></tr></thead><tbody id="invTable"></tbody></table></div></section>
 
@@ -103,7 +103,7 @@
 
 <section id="compras" class="section"><h2 class="moduleTitle">Compras</h2><div class="card"><div class="form five"><input id="comFecha" type="date"><input id="comProv" placeholder="Proveedor"><input id="comProducto" placeholder="Producto"><input id="comCat" placeholder="Categoría"><input id="comCant" type="number" placeholder="Cantidad"><input id="comUnit" type="number" placeholder="Costo unitario"><input id="comVenta" type="number" placeholder="Venta +30%"><select id="comPago"><option>Efectivo</option><option>Transferencia</option><option>Débito</option><option>Crédito</option><option>Cuenta corriente</option></select><input id="comFactura" placeholder="Factura"><input id="comOt" placeholder="OT asociada"></div><div class="actions"><button class="btn primary" onclick="saveCompra()">Agregar compra</button><button class="btn danger" onclick="del('compras')">Eliminar</button><button class="btn clean" onclick="clearCompra()">Limpiar</button></div><input class="search" id="searchCompras" oninput="render()" placeholder="Buscar compra"><table><thead><tr><th>Fecha</th><th>Proveedor</th><th>Producto</th><th>Cant.</th><th>Unitario</th><th>Total</th><th>Pago</th><th>Acción</th></tr></thead><tbody id="comprasTable"></tbody></table></div></section>
 
-<section id="fin" class="section"><h2 class="moduleTitle">Finanzas</h2><div class="grid two"><div class="card"><div class="form"><input id="finDesc" placeholder="Descripción"><select id="finTipo"><option>Gasto fijo</option><option>Gasto variable</option><option>Ingreso</option></select><input id="finCat" placeholder="Categoría"><input id="finMonto" type="number" placeholder="Monto"></div><div class="actions"><button class="btn primary" onclick="saveFin()">Agregar / Guardar</button><button class="btn danger" onclick="del('fin')">Eliminar</button><button class="btn clean" onclick="clearFin()">Limpiar</button></div><input class="search" id="searchFin" oninput="render()" placeholder="Buscar finanzas"><table><thead><tr><th>Descripción</th><th>Tipo</th><th>Categoría</th><th>Monto</th><th>Acción</th></tr></thead><tbody id="finTable"></tbody></table></div><div class="card"><div class="head"><h3>Punto de equilibrio</h3></div><div id="breakEven"></div></div></div></section>
+<section id="fin" class="section"><h2 class="moduleTitle">Finanzas</h2><div class="grid two"><div class="card"><div class="form"><input id="finDesc" placeholder="Descripción"><select id="finTipo"><option>Gasto fijo</option><option>Gasto variable</option><option>Ingreso</option></select><input id="finCat" placeholder="Categoría"><input id="finMonto" type="number" placeholder="Monto"></div><div class="actions"><button class="btn primary" onclick="saveFin()">Agregar / Guardar</button><button class="btn danger" onclick="del('fin')">Eliminar</button><button class="btn clean" onclick="clearFin()">Limpiar</button></div><input class="search" id="searchFin" oninput="render()" placeholder="Buscar finanzas"><table><thead><tr><th>Descripción</th><th>Tipo</th><th>Categoría</th><th>Total OT</th><th>Acción</th></tr></thead><tbody id="finTable"></tbody></table></div><div class="card"><div class="head"><h3>Punto de equilibrio</h3></div><div id="breakEven"></div></div></div></section>
 
 <section id="lab" class="section"><h2 class="moduleTitle">Laboratorio Técnico</h2><div class="card"><div class="notice">Base de conocimiento Toyota. Buscá por problema, modelo, solución o técnico.</div><br><div class="form twoCol"><input id="labModelo" placeholder="Modelo"><input id="labProblema" placeholder="Problema"><textarea id="labDiag" placeholder="Diagnóstico"></textarea><textarea id="labSol" placeholder="Solución"></textarea><input id="labTecnico" placeholder="Técnico"><input id="labRep" placeholder="Reparaciones asociadas"></div><div class="actions"><button class="btn primary" onclick="saveLab()">Agregar / Guardar</button><button class="btn danger" onclick="del('lab')">Eliminar</button><button class="btn clean" onclick="clearLab()">Limpiar</button></div><input class="search" id="searchLab" oninput="render()" placeholder="Buscar caso"><table><thead><tr><th>Modelo</th><th>Problema</th><th>Diagnóstico</th><th>Solución</th><th>Técnico</th><th>Acción</th></tr></thead><tbody id="labTable"></tbody></table></div></section>
 
@@ -515,6 +515,80 @@ function printPresupuesto(){
     </div>
   </div>`;
   window.print();
+}
+
+
+/* ===== V9.6 CORRECCIÓN FACTURACIÓN OT + CARGA UNIFICADA CLIENTE/VEHÍCULO ===== */
+function otPartsSaleTotal(){return (selectedOtParts||[]).reduce((a,p)=>a+(+p.venta||0)*(+p.cant||0),0)}
+function otPartsCostTotal(){return (selectedOtParts||[]).reduce((a,p)=>a+(+p.compra||0)*(+p.cant||0),0)}
+function updateOtGrandTotal(){
+  const mano=+((window.otMonto&&otMonto.value)||0)||0;
+  const rep=otPartsSaleTotal();
+  if(window.otGrandTotal) otGrandTotal.textContent=fmt(mano+rep);
+}
+const renderSelectedParts_v95=renderSelectedParts;
+renderSelectedParts=function(){renderSelectedParts_v95();updateOtGrandTotal()}
+if(window.otMonto) otMonto.addEventListener('input',updateOtGrandTotal);
+
+function clearClienteVehiculoFields(){['cliVehDominio','cliVehModelo','cliVehVersion','cliVehAnio','cliVehKm','cliVehVin','cliVehComb','cliVehObs'].forEach(i=>{if(window[i])$(i).value=''})}
+const clearCliente_v95=clearCliente;
+clearCliente=function(){clearCliente_v95();clearClienteVehiculoFields()}
+
+async function saveClienteVehiculo(){
+  try{
+    const clientePayload={nombre:cliNombre.value,dni_cuit:cliDni.value,telefono:cliTel.value,email:cliMail.value,direccion:cliDir.value,observaciones:cliObs.value};
+    if(!clientePayload.nombre) return msg('Cargá el nombre del cliente');
+    let clienteId=edit.clientes;
+    if(clienteId){
+      await db.from('clientes').update(clientePayload).eq('id',clienteId);
+    }else{
+      const inserted=await db.from('clientes').insert(clientePayload).select('id').single();
+      if(inserted.error) throw inserted.error;
+      clienteId=inserted.data.id;
+    }
+    const hayVehiculo=[cliVehDominio,cliVehModelo,cliVehVersion,cliVehAnio,cliVehKm,cliVehVin,cliVehComb,cliVehObs].some(x=>String(x.value||'').trim());
+    if(hayVehiculo){
+      const vehPayload={cliente_id:clienteId,dominio:cliVehDominio.value,modelo:cliVehModelo.value,version:cliVehVersion.value,anio:+cliVehAnio.value||null,kilometraje:+cliVehKm.value||null,vin:cliVehVin.value,combustible:cliVehComb.value,observaciones:cliVehObs.value};
+      await db.from('vehiculos').insert(vehPayload);
+    }
+    await audit('clientes','Alta / actualización','Cliente y vehículo cargados desde formulario unificado',clientePayload.nombre);
+    clearCliente();await loadAll();msg('Cliente y vehículo guardados correctamente');
+  }catch(e){msg(e.message);console.error(e)}
+}
+
+async function saveOT(){
+  try{
+    let num=otNumero.value||`OT-${String(data.ot.length+1).padStart(4,'0')}`;
+    const manoObra=+otMonto.value||0;
+    const repuestosVenta=otPartsSaleTotal();
+    const totalFacturado=manoObra+repuestosVenta;
+    let payload={numero_ot:num,cliente_id:otCliente.value||null,vehiculo_id:otVehiculo.value||null,cliente_texto:clienteName(otCliente.value),vehiculo_texto:vehText(otVehiculo.value),estado:otEstado.value,reparaciones:otReparaciones.value,tecnicos:otTecnicos.value,repuestos_usados:otRepuestos.value,horas_reales:+otHoras.value||0,monto_facturado:totalFacturado,fecha_ingreso:otIngreso.value||new Date().toISOString().slice(0,10),fecha_entrega:otEntrega.value||null,observaciones:otObs.value};
+    await upsert('ordenes_trabajo',payload,edit.ot);
+    await audit('ordenes_trabajo',edit.ot?'Actualización':'Alta',`${num} · Mano de obra ${fmt(manoObra)} + repuestos ${fmt(repuestosVenta)} = total ${fmt(totalFacturado)}`,num);
+    if(['Finalizado','Entregado'].includes(payload.estado)&&payload.monto_facturado>0){
+      let ex=await db.from('finanzas').select('id').eq('origen','OT').eq('referencia',num).maybeSingle();
+      const finPayload={descripcion:'Facturación '+num,tipo:'Ingreso',categoria:'Órdenes de trabajo',monto:payload.monto_facturado,fecha:payload.fecha_entrega||payload.fecha_ingreso,origen:'OT',referencia:num};
+      if(ex.data?.id) await db.from('finanzas').update(finPayload).eq('id',ex.data.id);
+      else await db.from('finanzas').insert(finPayload);
+    }
+    clearOT();await loadAll();
+  }catch(e){msg(e.message);console.error(e)}
+}
+
+function editOT(id){
+  let o=data.ot.find(x=>x.id===id);if(!o)return;
+  edit.ot=id;otNumero.value=o.numero_ot||'';otCliente.value=o.cliente_id||'';otVehiculo.value=o.vehiculo_id||'';otTecnicos.value=o.tecnicos||'';otEstado.value=o.estado||'Diagnóstico';otIngreso.value=o.fecha_ingreso||'';otEntrega.value=o.fecha_entrega||'';otHoras.value=o.horas_reales||'';otReparaciones.value=o.reparaciones||'';otRepuestos.value=o.repuestos_usados||'';selectedOtParts=parsePartsText(o.repuestos_usados||'');
+  const rep=otPartsSaleTotal();
+  otMonto.value=Math.max((+o.monto_facturado||0)-rep,0);
+  renderSelectedParts();otObs.value=o.observaciones||'';go('ot')
+}
+
+function presupuestoFromOTObject(o){
+  let parts=parsePartsText(o?.repuestos_usados||'');
+  let rep=parts.reduce((a,p)=>a+(+p.venta||0)*(+p.cant||0),0);
+  let total=+o?.monto_facturado||rep;
+  let mano=Math.max(total-rep,0);
+  return{numero_presupuesto:`PRE-${String((data.presupuestos||[]).length+1).padStart(4,'0')}`,ot_id:o?.id||null,numero_ot:o?.numero_ot||'',cliente_texto:o?.cliente_texto||'',vehiculo_texto:o?.vehiculo_texto||'',vehiculo_datos:vehiculoPresupuestoDesdeOT(o),estado:'Pendiente',detalle:o?.reparaciones||'',mano_obra:mano,repuestos:rep,total:mano+rep,validez_hasta:null,observaciones:o?.observaciones||''}
 }
 
 // La carga inicial ahora se ejecuta después del login real.
