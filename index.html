@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Laboratorio Toyota Martín Menéndez | V6.4</title>
+<title>Laboratorio Toyota Martín Menéndez | V7 Cloud</title>
 <style>
 :root{--bg:#050607;--side:#07090b;--card:#101417;--line:#26313a;--text:#f5f7fa;--muted:#a8b1ba;--red:#eb0a1e;--red2:#b70b18;--green:#48b95a;--blue:#4a89ff;--yellow:#efc032;--orange:#f07822;--purple:#6d45bc}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;overflow-x:hidden;font-size:12px}button,input,select,textarea{font-family:inherit}
@@ -20,158 +20,6 @@ table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:11px;line
 @media(max-width:1366px){.app{grid-template-columns:198px minmax(0,1fr)}.main{max-width:calc(100vw - 198px);padding:9px}.logo{width:84px;height:84px}.title h1{font-size:19px}.title h1 strong{font-size:18px}.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.kpi{height:72px}.topActions{display:none}.card{padding:9px}.two,.three{grid-template-columns:1fr}.nav button{font-size:9.8px;padding:7px 8px}}
 @media(max-width:1050px){.app{display:block}.sidebar{height:auto;position:relative}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.main{max-width:100vw}.kpis,.two,.three,.form,.form.compact,.form.twoCol,.form.full,.pillBox,.kanban{grid-template-columns:1fr}.form.full textarea{grid-column:auto}}
 @media print{body{background:#fff;color:#111}.app,.sidebar,.top,.footer,.section:not(.active){display:none!important}.printArea{display:block!important;color:#111;font-family:Arial}}
-
-/* ===== V6.4 GITHUB SAFE CSS PATCH =====
-   Limpieza final para GitHub Pages:
-   - elimina cortes por max-width calc()
-   - permite scroll interno sólo en tablas
-   - mejora proporciones y nitidez en notebook/desktop
-   - evita que los textos salgan de las tarjetas
-*/
-html,body{
-  width:100%;
-  min-height:100%;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  text-rendering:geometricPrecision;
-}
-.app{
-  width:100%;
-  max-width:none;
-  grid-template-columns:210px minmax(0,1fr);
-}
-.main{
-  width:100%;
-  max-width:none!important;
-  min-width:0;
-  padding:10px;
-}
-.sidebar{
-  min-width:0;
-}
-.logo{
-  image-rendering:auto;
-  max-width:92px;
-  max-height:92px;
-}
-.top{
-  min-height:78px;
-  padding:12px 16px;
-  overflow:hidden;
-}
-.title h1{
-  font-size:clamp(18px,1.45vw,25px);
-  line-height:1;
-  letter-spacing:.6px;
-}
-.title h1 strong{
-  font-size:clamp(17px,1.35vw,24px);
-  letter-spacing:clamp(1px,.22vw,3px);
-}
-.title p{
-  font-size:clamp(9px,.72vw,11px);
-  white-space:normal;
-}
-.kpis{
-  grid-template-columns:repeat(6,minmax(120px,1fr));
-  gap:8px;
-}
-.kpi{
-  min-width:0;
-  height:74px;
-  padding:9px;
-}
-.ico{
-  width:34px;
-  height:34px;
-  font-size:16px;
-}
-.kpi h3{
-  font-size:clamp(14px,1.05vw,18px);
-  line-height:1.05;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  max-width:100%;
-}
-.kpi p{
-  font-size:clamp(8.3px,.62vw,9.5px);
-  line-height:1.2;
-  white-space:normal;
-}
-.card{
-  min-width:0;
-  overflow:auto;
-  scrollbar-width:thin;
-}
-.head h2,.head h3{
-  font-size:clamp(11px,.82vw,13px);
-}
-.metric{
-  align-items:center;
-}
-.metric span{
-  min-width:0;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.metric b{
-  white-space:nowrap;
-}
-table{
-  width:100%;
-  min-width:680px;
-}
-#dash table{
-  min-width:520px;
-}
-th,td{
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-td.wrap{
-  overflow:visible;
-}
-.btn{
-  white-space:nowrap;
-}
-.form,.form.compact{
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-}
-.form.twoCol{
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-}
-.form.full{
-  grid-template-columns:1fr;
-}
-.form.full textarea{
-  grid-column:auto;
-}
-.kanban{
-  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
-}
-@media(max-width:1500px){
-  .app{grid-template-columns:198px minmax(0,1fr);}
-  .main{padding:9px;}
-  .brand{padding:8px;}
-  .logo{width:82px;height:82px;}
-  .brand b{font-size:10px;}
-  .brand small{font-size:7.5px;}
-  .nav button{font-size:9.5px;padding:7px 8px;}
-  .kpis{grid-template-columns:repeat(3,minmax(0,1fr));}
-  .two,.three{grid-template-columns:1fr;}
-  .topActions{display:none;}
-  .card{padding:8px;}
-}
-@media(max-width:900px){
-  .app{display:block;}
-  .sidebar{height:auto;position:relative;}
-  .nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
-  .main{padding:8px;}
-  .kpis{grid-template-columns:1fr;}
-  table{min-width:720px;}
-}
-
 </style>
 </head>
 <body>
@@ -281,86 +129,171 @@ td.wrap{
 <section id="kpis" class="section"><h2 class="moduleTitle">Reportes / KPIs</h2><div class="grid two"><div class="card"><div class="head"><h3>Productividad por operario</h3></div><div id="kpiOperarios"></div></div><div class="card"><div class="head"><h3>Indicadores técnicos y económicos</h3></div><div id="kpiTecnicos"></div></div></div></section>
 
 <datalist id="clientesList"></datalist><datalist id="vehiculosList"></datalist><datalist id="tecnicosList"></datalist><datalist id="productosList"></datalist>
-<div class="footer">© 2026 Laboratorio Toyota Martín Menéndez · Versión 6.4 GitHub Safe</div>
+<div class="footer">© 2026 Laboratorio Toyota Martín Menéndez · Versión 7.0 Cloud</div>
 </main></div>
 <div class="printArea" id="printArea"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const $=id=>document.getElementById(id), fmt=n=>'$ '+Math.round(+n||0).toLocaleString('es-AR'), key='ltmm_v63';
-function tick(){let d=new Date();clockBox.textContent=d.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});dateBox.textContent=d.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}setInterval(tick,1000);tick();
-const initial={
-clientes:[{nom:'Juan Pérez',dni:'20-00000000-1',tel:'11 5555-1234',mail:'juan@email.com',dir:'San Nicolás',obs:'Cliente Hilux. Prioriza mantenimiento preventivo.'},{nom:'Carlos Gómez',dni:'23-11111111-9',tel:'11 5555-9876',mail:'carlos@email.com',dir:'Ramallo',obs:'Flota Toyota. Consultar antes de trabajos mayores.'}],
-vehiculos:[{dominio:'AB123CD',cliente:'Juan Pérez',modelo:'Hilux 2.8',version:'4x4 AT',anio:2021,km:84000,vin:'-',comb:'Diésel',ult:'2026-06-01',obs:'Service y frenos'},{dominio:'AC456EF',cliente:'Carlos Gómez',modelo:'SW4 2.8',version:'SRX',anio:2020,km:112000,vin:'-',comb:'Diésel',ult:'2026-06-02',obs:'Inyección / EGR'}],
-ot:[{id:'OT-0001',cliente:'Juan Pérez',vehiculo:'AB123CD · Hilux 2.8 4x4 2021',reparaciones:'Service completo, frenos delanteros',estado:'Diagnóstico',tecnico:'Martín',horas:5,monto:1800000,ingreso:'2026-06-01',repuestos:'Filtro aceite Hilux:1, Aceite 5W30:8',obs:'Pendiente control'},{id:'OT-0002',cliente:'Carlos Gómez',vehiculo:'AC456EF · SW4 2.8 2020',reparaciones:'Inyección, escaneo, limpieza EGR',estado:'En reparación',tecnico:'Facundo, Diego',horas:8,monto:2300000,ingreso:'2026-06-02',repuestos:'Sensor ABS Corolla:1',obs:'Esperar autorización'},{id:'OT-0003',cliente:'María Rodríguez',vehiculo:'Corolla 1.8 2022',reparaciones:'Sistema eléctrico, sensores',estado:'Finalizado',tecnico:'Diego',horas:4,monto:900000,ingreso:'2026-06-03',repuestos:'',obs:'Finalizado'}],
-lab:[{modelo:'Hilux 2.8',problema:'Falta de potencia',diag:'Escaneo, presión combustible y revisión filtro',sol:'Cambio filtro combustible y limpieza sensor',tecnico:'Martín',rep:'Inyección, service'},{modelo:'SW4 2.8',problema:'Luz ABS encendida',diag:'Lectura de fallas y sensor de rueda',sol:'Reemplazo de sensor delantero',tecnico:'Facundo',rep:'ABS, sistema eléctrico'},{modelo:'Corolla 1.8',problema:'Falla intermitente de arranque',diag:'Prueba batería, alternador y relay',sol:'Cambio relay y limpieza de masas',tecnico:'Diego',rep:'Electricidad'}],
-inv:[{nombre:'Filtro aceite Hilux',cat:'Filtros',stock:12,min:5,costo:8500,venta:11050,prov:'Toyota / Alternativo',ubic:'A1'},{nombre:'Pastillas freno SW4',cat:'Frenos',stock:3,min:4,costo:42000,venta:54600,prov:'Proveedor local',ubic:'B2'},{nombre:'Aceite 5W30',cat:'Lubricantes',stock:25,min:8,costo:9800,venta:12740,prov:'YPF / Shell',ubic:'L1'},{nombre:'Sensor ABS Corolla',cat:'Sensores',stock:0,min:2,costo:65000,venta:84500,prov:'Toyota',ubic:'S3'}],
-per:[{nom:'Martín',ape:'Menéndez',dni:'-',tel:'-',cargo:'Dueño / Técnico especialista',esp:'Toyota Hilux',sueldo:0,ingreso:''},{nom:'Facundo',ape:'',dni:'-',tel:'-',cargo:'Mecánico',esp:'Mecánica general',sueldo:900000,ingreso:''},{nom:'Diego',ape:'',dni:'-',tel:'-',cargo:'Electricidad automotriz',esp:'Electrónica',sueldo:850000,ingreso:''}],
-fin:[{desc:'Alquiler taller',tipo:'Gasto fijo',cat:'Estructura',monto:1200000,origen:'manual'},{desc:'Sueldos',tipo:'Gasto fijo',cat:'Personal',monto:2000000,origen:'manual'},{desc:'Compra inicial de repuestos',tipo:'Gasto variable',cat:'Inventario',monto:850000,origen:'manual'}],
-compras:[{fecha:'2026-06-01',prov:'Toyota / Alternativo',prod:'Filtro aceite Hilux',cat:'Filtros',cant:10,unit:8500,venta:11050,pago:'Transferencia',factura:'FC-001',ot:'Stock general'}]
-};
-let state=JSON.parse(localStorage.getItem(key)||'null')||initial, edit={ot:null,lab:null,inv:null,per:null,fin:null,clientes:null,vehiculos:null,compras:null};
-['clientes','vehiculos','ot','lab','inv','per','fin','compras'].forEach(k=>state[k]=state[k]||initial[k]||[]);
-function save(){localStorage.setItem(key,JSON.stringify(state));render()}
-function show(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
-function go(id){[...document.querySelectorAll('.nav button')].find(b=>b.getAttribute('onclick').includes("'"+id+"'"))?.click()}
-function match(o,q){return JSON.stringify(o).toLowerCase().includes((q||'').toLowerCase())}
-function badge(e){let c=e.includes('Diagnóstico')?'bBlue':e.includes('reparación')?'bOrange':e.includes('Esperando')?'bYellow':(e.includes('Finalizado')||e.includes('Entregado'))?'bGreen':'bGray';return `<span class="badge ${c}">${e}</span>`}
+const SUPABASE_URL = 'https://kknwzyxuhwovwqnceapo.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_WRooiqX5W84G1HMncD0zsA_L8l4V3oB';
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const $ = id => document.getElementById(id);
+const fmt = n => '$ ' + Math.round(+n || 0).toLocaleString('es-AR');
+let state = { clientes:[], vehiculos:[], ot:[], lab:[], inv:[], per:[], fin:[], compras:[] };
+let edit = { ot:null, lab:null, inv:null, per:null, fin:null, clientes:null, vehiculos:null, compras:null };
+
+function tick(){
+  const d = new Date();
+  if($('clockBox')) $('clockBox').textContent = d.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  if($('dateBox')) $('dateBox').textContent = d.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+setInterval(tick,1000); tick();
+
+function show(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  $(id)?.classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  btn?.classList.add('active');
+}
+function go(id){[...document.querySelectorAll('.nav button')].find(b=>b.getAttribute('onclick')?.includes("'"+id+"'"))?.click()}
+function match(o,q){return JSON.stringify(o || {}).toLowerCase().includes((q||'').toLowerCase())}
+function badge(e){let c=(e||'').includes('Diagnóstico')?'bBlue':(e||'').includes('reparación')?'bOrange':(e||'').includes('Esperando')?'bYellow':((e||'').includes('Finalizado')||(e||'').includes('Entregado'))?'bGreen':'bGray';return `<span class="badge ${c}">${e||''}</span>`}
 function techList(s){return (s||'Sin asignar').split(',').map(x=>x.trim()).filter(Boolean)}
-function findInv(name){return state.inv.find(x=>(x.nombre||'').toLowerCase()===(name||'').toLowerCase())}
 function parseRepuestos(s){return (s||'').split(',').map(x=>x.trim()).filter(Boolean).map(x=>{let [n,q]=x.split(':');return {nombre:(n||'').trim(),cant:+q||1}})}
-function syncOtFinance(o){if(['Finalizado','Entregado'].includes(o.estado) && +o.monto>0){let ex=state.fin.find(f=>f.origen==='OT'&&f.ref===o.id); if(ex) ex.monto=+o.monto; else state.fin.push({desc:'Facturación '+o.id,tipo:'Ingreso',cat:'Órdenes de trabajo',monto:+o.monto,origen:'OT',ref:o.id})}}
-function descontarStock(o){parseRepuestos(o.repuestos).forEach(r=>{let item=findInv(r.nombre); if(item) item.stock=Math.max(0,(+item.stock||0)-r.cant)})}
-function ensureClienteVehiculo(o){if(o.cliente && !state.clientes.some(c=>(c.nom||'').toLowerCase()===o.cliente.toLowerCase()))state.clientes.push({nom:o.cliente,dni:'',tel:'',mail:'',dir:'',obs:'Creado desde OT'}); if(o.vehiculo && !state.vehiculos.some(v=>(v.dominio+' '+v.modelo).toLowerCase().includes(o.vehiculo.toLowerCase())))state.vehiculos.push({dominio:'',cliente:o.cliente,modelo:o.vehiculo,version:'',anio:'',km:'',vin:'',comb:'',ult:o.ingreso,obs:'Creado desde OT'})}
+function findInv(name){return state.inv.find(x=>(x.nombre||'').toLowerCase()===(name||'').toLowerCase())}
+function getByIndex(arr,i){ return Number.isInteger(i) ? state[arr][i] : null }
+async function alertDb(res){ if(res?.error){ console.error(res.error); alert('Error Supabase: '+res.error.message); return false } return true }
 
-function saveOT(){let o={id:edit.ot||`OT-${String(state.ot.length+1).padStart(4,'0')}`,cliente:otCliente.value,vehiculo:otVehiculo.value,tecnico:otTecnico.value,ingreso:otIngreso.value||new Date().toISOString().slice(0,10),estado:otEstado.value,horas:+otHoras.value||0,monto:+otMonto.value||0,reparaciones:otReparaciones.value,repuestos:otRepuestos.value,obs:otObs.value}; if(edit.ot) state.ot=state.ot.map(x=>x.id==edit.ot?o:x); else {state.ot.push(o); descontarStock(o)} ensureClienteVehiculo(o); syncOtFinance(o); clearOT();save()}
+function mapCliente(r){return {_id:r.id,nom:r.nombre||'',dni:r.dni_cuit||'',tel:r.telefono||'',mail:r.email||'',dir:r.direccion||'',obs:r.observaciones||''}}
+function mapVehiculo(r){return {_id:r.id,dominio:r.dominio||'',cliente:r.cliente_nombre||'',cliente_id:r.cliente_id,modelo:r.modelo||'',version:r.version||'',anio:r.anio||'',km:r.kilometraje||'',vin:r.vin||'',comb:r.combustible||'',ult:r.ult||'',obs:r.observaciones||''}}
+function mapOT(r){return {_id:r.id,id:r.numero_ot||'',cliente:r.cliente_texto||'',vehiculo:r.vehiculo_texto||'',reparaciones:r.reparaciones||'',estado:r.estado||'Diagnóstico',tecnico:r.tecnicos||'',horas:+r.horas_reales||0,monto:+r.monto_facturado||0,ingreso:r.fecha_ingreso||'',repuestos:r.repuestos_usados||'',obs:r.observaciones||''}}
+function mapLab(r){return {_id:r.id,modelo:r.modelo||'',problema:r.problema||'',diag:r.diagnostico||'',sol:r.solucion||'',tecnico:r.tecnico||'',rep:r.reparaciones_asociadas||''}}
+function mapInv(r){return {_id:r.id,nombre:r.producto||'',cat:r.categoria||'',stock:+r.stock||0,min:+r.stock_minimo||0,costo:+r.precio_compra||0,venta:+r.precio_venta||0,prov:r.proveedor||'',ubic:r.ubicacion||''}}
+function mapPer(r){return {_id:r.id,nom:r.nombre||'',ape:r.apellido||'',dni:r.dni||'',tel:r.contacto||'',cargo:r.cargo||'',esp:r.especialidad||'',sueldo:+r.sueldo||0,ingreso:r.fecha_ingreso||''}}
+function mapFin(r){return {_id:r.id,desc:r.descripcion||'',tipo:r.tipo||'',cat:r.categoria||'',monto:+r.monto||0,origen:r.origen||'manual',ref:r.referencia||'',fecha:r.fecha||''}}
+function mapCompra(r){return {_id:r.id,fecha:r.fecha||'',prov:r.proveedor||'',prod:r.producto||'',cat:r.categoria||'',cant:+r.cantidad||0,unit:+r.costo_unitario||0,venta:+r.precio_venta_sugerido||0,pago:r.forma_pago||'',factura:r.factura||'',ot:r.ot_asociada||''}}
+
+async function loadAll(){
+  const [clientes,vehiculos,ot,lab,inv,per,fin,compras] = await Promise.all([
+    db.from('clientes').select('*').order('created_at',{ascending:false}),
+    db.from('vehiculos').select('*').order('created_at',{ascending:false}),
+    db.from('ordenes_trabajo').select('*').order('created_at',{ascending:false}),
+    db.from('laboratorio_tecnico').select('*').order('created_at',{ascending:false}),
+    db.from('inventario').select('*').order('created_at',{ascending:false}),
+    db.from('personal').select('*').order('created_at',{ascending:false}),
+    db.from('finanzas').select('*').order('created_at',{ascending:false}),
+    db.from('compras').select('*').order('created_at',{ascending:false})
+  ]);
+  for (const res of [clientes,vehiculos,ot,lab,inv,per,fin,compras]) if(res.error) console.error(res.error);
+  state.clientes=(clientes.data||[]).map(mapCliente);
+  state.vehiculos=(vehiculos.data||[]).map(mapVehiculo);
+  state.ot=(ot.data||[]).map(mapOT);
+  state.lab=(lab.data||[]).map(mapLab);
+  state.inv=(inv.data||[]).map(mapInv);
+  state.per=(per.data||[]).map(mapPer);
+  state.fin=(fin.data||[]).map(mapFin);
+  state.compras=(compras.data||[]).map(mapCompra);
+  render();
+}
+async function save(){ await loadAll(); }
+
+function nextOT(){
+  const nums = state.ot.map(o => +(String(o.id||'').replace(/\D/g,'')) || 0);
+  return `OT-${String((Math.max(0,...nums)+1)).padStart(4,'0')}`;
+}
+function prod(){let m={};state.ot.forEach(o=>{techList(o.tecnico).forEach(t=>{m[t]=m[t]||{trab:0,horas:0,monto:0};m[t].trab++;m[t].horas+=(+o.horas||0)/techList(o.tecnico).length;m[t].monto+=(+o.monto||0)/techList(o.tecnico).length})});return m}
+function finances(){let ingresos=state.fin.filter(x=>x.tipo==='Ingreso').reduce((a,b)=>a+(+b.monto||0),0), fijos=state.fin.filter(x=>x.tipo==='Gasto fijo').reduce((a,b)=>a+(+b.monto||0),0), vars=state.fin.filter(x=>x.tipo==='Gasto variable').reduce((a,b)=>a+(+b.monto||0),0);return {ingresos,fijos,vars,gastos:fijos+vars}}
+function renderLists(){
+  if($('clientesList')) $('clientesList').innerHTML=state.clientes.map(c=>`<option value="${c.nom}">`).join('');
+  if($('vehiculosList')) $('vehiculosList').innerHTML=state.vehiculos.map(v=>`<option value="${v.dominio? v.dominio+' · ':''}${v.modelo} ${v.version||''}">`).join('');
+  if($('tecnicosList')) $('tecnicosList').innerHTML=state.per.map(p=>`<option value="${p.nom}">`).join('');
+  if($('productosList')) $('productosList').innerHTML=state.inv.map(i=>`<option value="${i.nombre}">`).join('');
+}
+
+async function syncOtFinance(o){
+  if(['Finalizado','Entregado'].includes(o.estado) && +o.monto>0){
+    const {data:ex}=await db.from('finanzas').select('id').eq('origen','OT').eq('referencia',o.id).maybeSingle();
+    const payload={descripcion:'Facturación '+o.id,tipo:'Ingreso',categoria:'Órdenes de trabajo',monto:+o.monto,origen:'OT',referencia:o.id,fecha:o.ingreso||new Date().toISOString().slice(0,10)};
+    if(ex?.id) await db.from('finanzas').update(payload).eq('id',ex.id); else await db.from('finanzas').insert(payload);
+  }
+}
+async function descontarStock(o){
+  for(const r of parseRepuestos(o.repuestos)){
+    const item=findInv(r.nombre);
+    if(item){ await db.from('inventario').update({stock:Math.max(0,(+item.stock||0)-r.cant)}).eq('id',item._id); }
+  }
+}
+async function ensureClienteVehiculo(o){
+  if(o.cliente && !state.clientes.some(c=>(c.nom||'').toLowerCase()===o.cliente.toLowerCase())){
+    await db.from('clientes').insert({nombre:o.cliente, observaciones:'Creado desde OT'});
+  }
+  if(o.vehiculo && !state.vehiculos.some(v=>(v.dominio+' '+v.modelo).toLowerCase().includes(o.vehiculo.toLowerCase()))){
+    await db.from('vehiculos').insert({modelo:o.vehiculo, cliente_id:null, observaciones:'Creado desde OT'});
+  }
+}
+
+async function saveOT(){
+  const existing=getByIndex('ot',edit.ot);
+  const o={id:existing?.id||nextOT(),cliente:otCliente.value,vehiculo:otVehiculo.value,tecnico:otTecnico.value,ingreso:otIngreso.value||new Date().toISOString().slice(0,10),estado:otEstado.value,horas:+otHoras.value||0,monto:+otMonto.value||0,reparaciones:otReparaciones.value,repuestos:otRepuestos.value,obs:otObs.value};
+  const payload={numero_ot:o.id,cliente_texto:o.cliente,vehiculo_texto:o.vehiculo,estado:o.estado,reparaciones:o.reparaciones,tecnicos:o.tecnico,repuestos_usados:o.repuestos,horas_reales:o.horas,monto_facturado:o.monto,fecha_ingreso:o.ingreso,observaciones:o.obs};
+  let res= existing? await db.from('ordenes_trabajo').update(payload).eq('id',existing._id) : await db.from('ordenes_trabajo').insert(payload);
+  if(!(await alertDb(res))) return;
+  if(!existing) await descontarStock(o);
+  await ensureClienteVehiculo(o); await syncOtFinance(o); clearOT(); await save();
+}
 function clearOT(){['otCliente','otVehiculo','otTecnico','otIngreso','otHoras','otMonto','otReparaciones','otRepuestos','otObs'].forEach(i=>$(i).value='');otEstado.value='Diagnóstico';edit.ot=null}
-function editOT(id){let o=state.ot.find(x=>x.id==id); if(!o)return; edit.ot=id;otCliente.value=o.cliente;otVehiculo.value=o.vehiculo;otTecnico.value=o.tecnico;otIngreso.value=o.ingreso||'';otEstado.value=o.estado;otHoras.value=o.horas||'';otMonto.value=o.monto||'';otReparaciones.value=o.reparaciones||'';otRepuestos.value=o.repuestos||'';otObs.value=o.obs||''}
+function editOT(id){let i=state.ot.findIndex(x=>x.id==id);let o=state.ot[i]; if(!o)return; edit.ot=i;otCliente.value=o.cliente;otVehiculo.value=o.vehiculo;otTecnico.value=o.tecnico;otIngreso.value=o.ingreso||'';otEstado.value=o.estado;otHoras.value=o.horas||'';otMonto.value=o.monto||'';otReparaciones.value=o.reparaciones||'';otRepuestos.value=o.repuestos||'';otObs.value=o.obs||''}
 
-function saveLab(){let o={modelo:labModelo.value,problema:labProblema.value,diag:labDiag.value,sol:labSol.value,tecnico:labTecnico.value,rep:labRep.value}; if(edit.lab!==null)state.lab[edit.lab]=o;else state.lab.push(o);clearLab();save()}
+async function saveLab(){let existing=getByIndex('lab',edit.lab);let payload={modelo:labModelo.value,problema:labProblema.value,diagnostico:labDiag.value,solucion:labSol.value,tecnico:labTecnico.value,reparaciones_asociadas:labRep.value};let res=existing?await db.from('laboratorio_tecnico').update(payload).eq('id',existing._id):await db.from('laboratorio_tecnico').insert(payload);if(await alertDb(res)){clearLab();await save()}}
 function clearLab(){['labModelo','labProblema','labDiag','labSol','labTecnico','labRep'].forEach(i=>$(i).value='');edit.lab=null}
 function editLab(i){let o=state.lab[i];edit.lab=i;labModelo.value=o.modelo;labProblema.value=o.problema;labDiag.value=o.diag;labSol.value=o.sol;labTecnico.value=o.tecnico;labRep.value=o.rep||''}
 
-function saveInv(){let c=+invCosto.value||0;let o={nombre:invNombre.value,cat:invCat.value,stock:+invStock.value||0,min:+invMin.value||0,costo:c,venta:+invVenta.value||Math.round(c*1.3),prov:invProv.value,ubic:invUbic.value}; if(edit.inv!==null)state.inv[edit.inv]=o;else state.inv.push(o);clearInv();save()}
-invCosto.addEventListener('input',()=>invVenta.value=Math.round((+invCosto.value||0)*1.3));
+async function saveInv(){let existing=getByIndex('inv',edit.inv);let c=+invCosto.value||0;let payload={producto:invNombre.value,categoria:invCat.value,stock:+invStock.value||0,stock_minimo:+invMin.value||0,precio_compra:c,precio_venta:+invVenta.value||Math.round(c*1.3),proveedor:invProv.value,ubicacion:invUbic.value};let res=existing?await db.from('inventario').update(payload).eq('id',existing._id):await db.from('inventario').insert(payload);if(await alertDb(res)){clearInv();await save()}}
+invCosto?.addEventListener('input',()=>invVenta.value=Math.round((+invCosto.value||0)*1.3));
 function clearInv(){['invNombre','invCat','invStock','invMin','invCosto','invVenta','invProv','invUbic'].forEach(i=>$(i).value='');edit.inv=null}
 function editInv(i){let o=state.inv[i];edit.inv=i;invNombre.value=o.nombre;invCat.value=o.cat;invStock.value=o.stock;invMin.value=o.min;invCosto.value=o.costo;invVenta.value=o.venta;invProv.value=o.prov;invUbic.value=o.ubic||''}
 
-function savePer(){let o={nom:perNom.value,ape:perApe.value,dni:perDni.value,tel:perTel.value,cargo:perCargo.value,esp:perEsp.value,sueldo:+perSueldo.value||0,ingreso:perIngreso.value}; if(edit.per!==null)state.per[edit.per]=o;else state.per.push(o);clearPer();save()}
+async function savePer(){let existing=getByIndex('per',edit.per);let payload={nombre:perNom.value,apellido:perApe.value,dni:perDni.value,contacto:perTel.value,cargo:perCargo.value,especialidad:perEsp.value,sueldo:+perSueldo.value||0,fecha_ingreso:perIngreso.value||null};let res=existing?await db.from('personal').update(payload).eq('id',existing._id):await db.from('personal').insert(payload);if(await alertDb(res)){clearPer();await save()}}
 function clearPer(){['perNom','perApe','perDni','perTel','perCargo','perEsp','perSueldo','perIngreso'].forEach(i=>$(i).value='');edit.per=null}
 function editPer(i){let o=state.per[i];edit.per=i;perNom.value=o.nom;perApe.value=o.ape;perDni.value=o.dni;perTel.value=o.tel;perCargo.value=o.cargo;perEsp.value=o.esp||'';perSueldo.value=o.sueldo||'';perIngreso.value=o.ingreso||''}
 
-function saveFin(){let o={desc:finDesc.value,tipo:finTipo.value,cat:finCat.value,monto:+finMonto.value||0,origen:'manual'}; if(edit.fin!==null)state.fin[edit.fin]=o;else state.fin.push(o);clearFin();save()}
+async function saveFin(){let existing=getByIndex('fin',edit.fin);let payload={descripcion:finDesc.value,tipo:finTipo.value,categoria:finCat.value,monto:+finMonto.value||0,origen:'manual',fecha:new Date().toISOString().slice(0,10)};let res=existing?await db.from('finanzas').update(payload).eq('id',existing._id):await db.from('finanzas').insert(payload);if(await alertDb(res)){clearFin();await save()}}
 function clearFin(){['finDesc','finCat','finMonto'].forEach(i=>$(i).value='');finTipo.value='Gasto fijo';edit.fin=null}
 function editFin(i){let o=state.fin[i];edit.fin=i;finDesc.value=o.desc;finTipo.value=o.tipo;finCat.value=o.cat;finMonto.value=o.monto}
 
-function saveCliente(){let o={nom:cliNom.value,dni:cliDni.value,tel:cliTel.value,mail:cliMail.value,dir:cliDir.value,obs:cliObs.value}; if(edit.clientes!==null)state.clientes[edit.clientes]=o;else state.clientes.push(o);clearCliente();save()}
+async function saveCliente(){let existing=getByIndex('clientes',edit.clientes);let payload={nombre:cliNom.value,dni_cuit:cliDni.value,telefono:cliTel.value,email:cliMail.value,direccion:cliDir.value,observaciones:cliObs.value};let res=existing?await db.from('clientes').update(payload).eq('id',existing._id):await db.from('clientes').insert(payload);if(await alertDb(res)){clearCliente();await save()}}
 function clearCliente(){['cliNom','cliDni','cliTel','cliMail','cliDir','cliObs'].forEach(i=>$(i).value='');edit.clientes=null}
 function editCliente(i){let o=state.clientes[i];edit.clientes=i;cliNom.value=o.nom;cliDni.value=o.dni;cliTel.value=o.tel;cliMail.value=o.mail;cliDir.value=o.dir;cliObs.value=o.obs||''}
 
-function saveVehiculo(){let o={dominio:vehDominio.value,cliente:vehCliente.value,modelo:vehModelo.value,version:vehVersion.value,anio:+vehAnio.value||'',km:+vehKm.value||'',vin:vehVin.value,comb:vehComb.value,ult:vehUlt.value,obs:vehObs.value}; if(edit.vehiculos!==null)state.vehiculos[edit.vehiculos]=o;else state.vehiculos.push(o);clearVehiculo();save()}
+async function saveVehiculo(){let existing=getByIndex('vehiculos',edit.vehiculos);let cliente=state.clientes.find(c=>(c.nom||'').toLowerCase()===(vehCliente.value||'').toLowerCase());let payload={cliente_id:cliente?._id||null,dominio:vehDominio.value,marca:'Toyota',modelo:vehModelo.value,version:vehVersion.value,anio:+vehAnio.value||null,kilometraje:+vehKm.value||null,vin:vehVin.value,combustible:vehComb.value,observaciones:vehObs.value};let res=existing?await db.from('vehiculos').update(payload).eq('id',existing._id):await db.from('vehiculos').insert(payload);if(await alertDb(res)){clearVehiculo();await save()}}
 function clearVehiculo(){['vehDominio','vehCliente','vehModelo','vehVersion','vehAnio','vehKm','vehVin','vehComb','vehUlt','vehObs'].forEach(i=>$(i).value='');edit.vehiculos=null}
 function editVehiculo(i){let o=state.vehiculos[i];edit.vehiculos=i;vehDominio.value=o.dominio;vehCliente.value=o.cliente;vehModelo.value=o.modelo;vehVersion.value=o.version;vehAnio.value=o.anio;vehKm.value=o.km;vehVin.value=o.vin;vehComb.value=o.comb;vehUlt.value=o.ult;vehObs.value=o.obs||''}
 
-function saveCompra(){let unit=+comUnit.value||0,cant=+comCant.value||0,venta=+comVenta.value||Math.round(unit*1.3);let o={fecha:comFecha.value||new Date().toISOString().slice(0,10),prov:comProv.value,prod:comProd.value,cat:comCat.value,cant,unit,venta,pago:comPago.value,factura:comFactura.value,ot:comOT.value||'Stock general'}; if(edit.compras!==null)state.compras[edit.compras]=o;else{state.compras.push(o);let item=findInv(o.prod);if(item){item.stock=(+item.stock||0)+cant;item.costo=unit;item.venta=venta;item.prov=o.prov;item.cat=o.cat||item.cat}else if(o.prod)state.inv.push({nombre:o.prod,cat:o.cat,stock:cant,min:1,costo:unit,venta,prov:o.prov,ubic:'A definir'});state.fin.push({desc:'Compra: '+o.prod,tipo:'Gasto variable',cat:o.cat||'Inventario',monto:cant*unit,origen:'Compra',ref:o.factura||o.prod})} clearCompra();save()}
-comUnit.addEventListener('input',()=>comVenta.value=Math.round((+comUnit.value||0)*1.3));
+async function saveCompra(){let existing=getByIndex('compras',edit.compras);let unit=+comUnit.value||0,cant=+comCant.value||0,venta=+comVenta.value||Math.round(unit*1.3);let payload={fecha:comFecha.value||new Date().toISOString().slice(0,10),proveedor:comProv.value,producto:comProd.value,categoria:comCat.value,cantidad:cant,costo_unitario:unit,precio_venta_sugerido:venta,forma_pago:comPago.value,factura:comFactura.value,ot_asociada:comOT.value||'Stock general'};let res=existing?await db.from('compras').update(payload).eq('id',existing._id):await db.from('compras').insert(payload);if(!(await alertDb(res)))return;if(!existing){let item=findInv(payload.producto);if(item)await db.from('inventario').update({stock:(+item.stock||0)+cant,precio_compra:unit,precio_venta:venta,proveedor:payload.proveedor,categoria:payload.categoria||item.cat}).eq('id',item._id);else if(payload.producto)await db.from('inventario').insert({producto:payload.producto,categoria:payload.categoria,stock:cant,stock_minimo:1,precio_compra:unit,precio_venta:venta,proveedor:payload.proveedor,ubicacion:'A definir'});await db.from('finanzas').insert({descripcion:'Compra: '+payload.producto,tipo:'Gasto variable',categoria:payload.categoria||'Inventario',monto:cant*unit,origen:'Compra',referencia:payload.factura||payload.producto,fecha:payload.fecha});}clearCompra();await save()}
+comUnit?.addEventListener('input',()=>comVenta.value=Math.round((+comUnit.value||0)*1.3));
 function clearCompra(){['comFecha','comProv','comProd','comCat','comCant','comUnit','comVenta','comFactura','comOT'].forEach(i=>$(i).value='');comPago.value='Efectivo';edit.compras=null}
 function editCompra(i){let o=state.compras[i];edit.compras=i;comFecha.value=o.fecha;comProv.value=o.prov;comProd.value=o.prod;comCat.value=o.cat;comCant.value=o.cant;comUnit.value=o.unit;comVenta.value=o.venta;comPago.value=o.pago;comFactura.value=o.factura;comOT.value=o.ot}
 
-function deleteSelected(t){if(edit[t]===null)return alert('Primero seleccioná un registro con Editar.'); if(t==='ot')state.ot=state.ot.filter(x=>x.id!==edit.ot); else state[t].splice(edit[t],1); edit[t]=null; save()}
-function prod(){let m={};state.ot.forEach(o=>{techList(o.tecnico).forEach(t=>{m[t]=m[t]||{trab:0,horas:0,monto:0};m[t].trab++;m[t].horas+=(+o.horas||0)/techList(o.tecnico).length;m[t].monto+=(+o.monto||0)/techList(o.tecnico).length})});return m}
-function renderLists(){clientesList.innerHTML=state.clientes.map(c=>`<option value="${c.nom}">`).join('');vehiculosList.innerHTML=state.vehiculos.map(v=>`<option value="${v.dominio? v.dominio+' · ':''}${v.modelo} ${v.version||''}">`).join('');tecnicosList.innerHTML=state.per.map(p=>`<option value="${p.nom}">`).join('');productosList.innerHTML=state.inv.map(i=>`<option value="${i.nombre}">`).join('')}
-function finances(){let ingresos=state.fin.filter(x=>x.tipo==='Ingreso').reduce((a,b)=>a+(+b.monto||0),0), fijos=state.fin.filter(x=>x.tipo==='Gasto fijo').reduce((a,b)=>a+(+b.monto||0),0), vars=state.fin.filter(x=>x.tipo==='Gasto variable').reduce((a,b)=>a+(+b.monto||0),0);return {ingresos,fijos,vars,gastos:fijos+vars}}
+async function deleteSelected(t){
+  if(edit[t]===null) return alert('Primero seleccioná un registro con Editar.');
+  const tables={ot:'ordenes_trabajo',lab:'laboratorio_tecnico',inv:'inventario',per:'personal',fin:'finanzas',clientes:'clientes',vehiculos:'vehiculos',compras:'compras'};
+  const obj=getByIndex(t,edit[t]); if(!obj?._id) return alert('No se encontró el registro.');
+  const res=await db.from(tables[t]).delete().eq('id',obj._id);
+  if(await alertDb(res)){edit[t]=null;await save();}
+}
 
 function render(){
 renderLists(); let f=finances(), p=prod(), activos=state.ot.filter(x=>!['Finalizado','Entregado'].includes(x.estado));
 kVeh.textContent=activos.length;kOt.textContent=activos.length;kFin.textContent=state.ot.filter(x=>['Finalizado','Entregado'].includes(x.estado)).length;kFac.textContent=fmt(f.ingresos);kGas.textContent=fmt(f.gastos);kGan.textContent=fmt(f.ingresos-f.gastos);
 dashOT.innerHTML=activos.slice(0,5).map(o=>`<tr><td>${o.id}</td><td>${o.cliente}</td><td>${o.vehiculo}</td><td>${badge(o.estado)}</td><td>${o.tecnico}</td><td>${o.ingreso||''}</td></tr>`).join('');
 dashProd.innerHTML=Object.entries(p).map(([n,v])=>{let ef=Math.min(98,60+v.trab*8);return `<tr><td>${n}</td><td>${v.trab}</td><td>${v.horas.toFixed(1)}</td><td>${ef}%<div class="progress"><div class="bar" style="width:${ef}%"></div></div></td></tr>`}).join('');
-let probs={};state.lab.forEach(x=>probs[x.problema]=(probs[x.problema]||0)+1);fallas.innerHTML=(Object.entries(probs).length?Object.entries(probs):[['Problemas de Inyección',12],['Sistema eléctrico',9],['Sensores',7],['Frenos',5],['Service',4]]).slice(0,5).map(([n,c],i)=>`<div class="metric"><span>${i+1}. ${n}</span><b>${c} casos</b></div>`).join('');
+let probs={};state.lab.forEach(x=>probs[x.problema]=(probs[x.problema]||0)+1);fallas.innerHTML=(Object.entries(probs).length?Object.entries(probs):[['Sin casos cargados',0]]).slice(0,5).map(([n,c],i)=>`<div class="metric"><span>${i+1}. ${n}</span><b>${c} casos</b></div>`).join('');
 let sin=state.inv.filter(x=>x.stock<=0).length, low=state.inv.filter(x=>x.stock>0&&x.stock<=x.min).length, ok=state.inv.length-sin-low;invPills.innerHTML=`<div class="pill stock0"><b>${sin}</b><small>Sin stock</small></div><div class="pill stockLow"><b>${low}</b><small>Stock bajo</small></div><div class="pill stockOk"><b>${ok}</b><small>Stock OK</small></div>`;
 reminders.innerHTML=state.inv.filter(x=>x.stock<=x.min).slice(0,4).map(x=>`<div class="metric"><span>${x.nombre}</span><b class="red">Comprar</b></div>`).join('')||'<div class="metric"><span>Inventario sin alertas críticas</span><b class="green">OK</b></div>';
 finStatus.innerHTML=`<div class="metric"><span>Ingresos</span><b class="green">${fmt(f.ingresos)}</b></div><div class="metric"><span>Gastos fijos</span><b class="red">${fmt(f.fijos)}</b></div><div class="metric"><span>Gastos variables</span><b class="red">${fmt(f.vars)}</b></div><div class="metric"><span>Total gastos</span><b class="red">${fmt(f.gastos)}</b></div><div class="metric"><span>Ganancia neta</span><b class="green">${fmt(f.ingresos-f.gastos)}</b></div>`;
-let lanes=['Diagnóstico','En reparación','Esperando repuestos','Finalizado']; kanbanOT.innerHTML=lanes.map(l=>`<div class="lane"><h4>${l}</h4>${state.ot.filter(o=>o.estado===l).slice(0,4).map(o=>`<div class="miniOT"><b>${o.id} · ${o.cliente}</b>${o.vehiculo}<br>${o.reparaciones}</div>`).join('')||'<div class="miniOT">Sin trabajos</div>'}</div>`).join('');
+let lanes=['Diagnóstico','En reparación','Esperando repuestos','Finalizado']; if($('kanbanOT')) kanbanOT.innerHTML=lanes.map(l=>`<div class="lane"><h4>${l}</h4>${state.ot.filter(o=>o.estado===l).slice(0,4).map(o=>`<div class="miniOT"><b>${o.id} · ${o.cliente}</b>${o.vehiculo}<br>${o.reparaciones}</div>`).join('')||'<div class="miniOT">Sin trabajos</div>'}</div>`).join('');
 otTable.innerHTML=state.ot.filter(o=>match(o,searchOT.value)).map(o=>`<tr><td>${o.id}</td><td>${o.cliente}</td><td>${o.vehiculo}</td><td class="wrap">${o.reparaciones}</td><td>${badge(o.estado)}</td><td>${o.tecnico}</td><td>${o.horas}</td><td>${fmt(o.monto)}</td><td><button class="btn" onclick="editOT('${o.id}')">Editar</button></td></tr>`).join('');
 labTable.innerHTML=state.lab.filter(o=>match(o,searchLab.value)).map((o,i)=>`<tr><td>${o.modelo}</td><td>${o.problema}</td><td class="wrap">${o.diag}</td><td class="wrap">${o.sol}</td><td>${o.tecnico}</td><td>${o.rep||''}</td><td><button class="btn" onclick="editLab(${i})">Editar</button></td></tr>`).join('');
 clientesTable.innerHTML=state.clientes.filter(o=>match(o,searchClientes.value)).map((o,i)=>{let veh=state.vehiculos.filter(v=>(v.cliente||'').toLowerCase()===(o.nom||'').toLowerCase()).length, ots=state.ot.filter(v=>(v.cliente||'').toLowerCase()===(o.nom||'').toLowerCase()).length;return `<tr><td>${o.nom}</td><td>${o.dni}</td><td>${o.tel}</td><td>${o.mail}</td><td>${o.dir}</td><td>${veh}</td><td>${ots}</td><td><button class="btn" onclick="editCliente(${i})">Editar</button></td></tr>`}).join('');
@@ -373,7 +306,8 @@ let margen=(f.ingresos-f.vars)/(f.ingresos||1), pe=margen>0?f.fijos/margen:0;bre
 kpiOperarios.innerHTML=Object.entries(p).map(([n,v])=>`<div class="metric"><span>${n}</span><b>${v.trab} trabajos · ${v.horas.toFixed(1)} hs · ${fmt(v.monto)}</b></div>`).join('');
 kpiTecnicos.innerHTML=`<div class="metric"><span>Clientes cargados</span><b>${state.clientes.length}</b></div><div class="metric"><span>Vehículos cargados</span><b>${state.vehiculos.length}</b></div><div class="metric"><span>Casos técnicos</span><b>${state.lab.length}</b></div><div class="metric"><span>Productos inventario</span><b>${state.inv.length}</b></div><div class="metric"><span>Órdenes registradas</span><b>${state.ot.length}</b></div><div class="metric"><span>Punto de equilibrio</span><b class="blue">${fmt(pe)}</b></div>`;
 }
-function printOT(){let id=edit.ot||prompt('Ingrese número de OT a imprimir');let o=state.ot.find(x=>x.id===id);if(!o)return alert('No se encontró la OT.');printArea.innerHTML=`<h1>Laboratorio Toyota Martín Menéndez</h1><h2>Presupuesto / Orden de Trabajo ${o.id}</h2><p><b>Cliente:</b> ${o.cliente}</p><p><b>Vehículo:</b> ${o.vehiculo}</p><p><b>Estado:</b> ${o.estado}</p><p><b>Reparaciones:</b> ${o.reparaciones}</p><p><b>Repuestos:</b> ${o.repuestos||'-'}</p><p><b>Horas:</b> ${o.horas}</p><h2>Total: ${fmt(o.monto)}</h2><p>Observaciones: ${o.obs||''}</p>`;window.print()}
-render();
+function printOT(){let id=edit.ot!==null?state.ot[edit.ot]?.id:prompt('Ingrese número de OT a imprimir');let o=state.ot.find(x=>x.id===id);if(!o)return alert('No se encontró la OT.');printArea.innerHTML=`<h1>Laboratorio Toyota Martín Menéndez</h1><h2>Presupuesto / Orden de Trabajo ${o.id}</h2><p><b>Cliente:</b> ${o.cliente}</p><p><b>Vehículo:</b> ${o.vehiculo}</p><p><b>Estado:</b> ${o.estado}</p><p><b>Reparaciones:</b> ${o.reparaciones}</p><p><b>Repuestos:</b> ${o.repuestos||'-'}</p><p><b>Horas:</b> ${o.horas}</p><h2>Total: ${fmt(o.monto)}</h2><p>Observaciones: ${o.obs||''}</p>`;window.print()}
+
+loadAll();
 </script>
 </body></html>
