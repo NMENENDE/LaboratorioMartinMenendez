@@ -309,9 +309,79 @@ function show(id,btn){document.querySelectorAll('.section').forEach(s=>s.classLi
 function go(id){[...document.querySelectorAll('.nav button')].find(b=>b.getAttribute('onclick').includes("'"+id+"'"))?.click()}
 function match(o,q){return JSON.stringify(o).toLowerCase().includes((q||'').toLowerCase())}
 function badge(e){let c=e?.includes('Diagnóstico')?'bBlue':e?.includes('reparación')?'bOrange':e?.includes('Esperando')?'bYellow':(e?.includes('Finalizado')||e?.includes('Entregado'))?'bGreen':'bGray';return `<span class="badge ${c}">${e||''}</span>`}
-async function loadAll(){try{cloudStatus.textContent='Conectado';cloudStatus.className='green';let [clientes,vehiculos,ot,inv,per,compras,fin,lab,usuarios,presupuestos,auditoria]=await Promise.all([db.from('clientes').select('*').order('created_at',{ascending:false}),db.from('vehiculos').select('*, clientes(nombre)').order('created_at',{ascending:false}),db.from('ordenes_trabajo').select('*').order('created_at',{ascending:false}),db.from('inventario').select('*').order('created_at',{ascending:false}),db.from('personal').select('*').order('created_at',{ascending:false}),db.from('compras').select('*').order('created_at',{ascending:false}),db.from('finanzas').select('*').order('created_at',{ascending:false}),db.from('laboratorio_tecnico').select('*').order('created_at',{ascending:false}),db.from('usuarios').select('*').order('nombre',{ascending:true}),db.from('presupuestos').select('*').order('created_at',{ascending:false}),db.from('auditoria').select('*').order('created_at',{ascending:false}).limit(200)]);
-for(const r of [clientes,vehiculos,ot,inv,per,compras,fin,lab]) if(r.error) throw r.error;
-data={clientes:clientes.data||[],vehiculos:vehiculos.data||[],ot:ot.data||[],inv:inv.data||[],per:per.data||[],compras:compras.data||[],fin:fin.data||[],lab:lab.data||[],usuarios:usuarios.data||[],presupuestos:presupuestos.data||[],auditoria:auditoria.data||[]};render()}catch(e){cloudStatus.textContent='Error';cloudStatus.className='red';msg('Error Supabase: '+e.message);console.error(e)}}
+async function fetchTableSafe(table, select='*', orderCol='created_at', ascending=false, limit=null){
+  try{
+    let q=db.from(table).select(select);
+    if(orderCol) q=q.order(orderCol,{ascending});
+    if(limit) q=q.limit(limit);
+    let {data:rows,error}=await q;
+    if(error){
+      console.warn('Supabase: error con orden en '+table+'. Reintentando sin order.', error);
+      q=db.from(table).select(select);
+      if(limit) q=q.limit(limit);
+      let retry=await q;
+      if(retry.error){
+        console.warn('Supabase: no se pudo leer '+table, retry.error);
+        return [];
+      }
+      return retry.data||[];
+    }
+    return rows||[];
+  }catch(err){
+    console.warn('Supabase: excepción leyendo '+table, err);
+    return [];
+  }
+}
+
+async function loadAll(){
+  try{
+    cloudStatus.textContent='Conectando...';
+    cloudStatus.className='blue';
+
+    const [
+      clientes,
+      vehiculos,
+      ot,
+      inv,
+      per,
+      compras,
+      fin,
+      lab,
+      usuarios,
+      presupuestos,
+      auditoria
+    ]=await Promise.all([
+      fetchTableSafe('clientes','*','created_at',false),
+      fetchTableSafe('vehiculos','*, clientes(nombre)','created_at',false),
+      fetchTableSafe('ordenes_trabajo','*','created_at',false),
+      fetchTableSafe('inventario','*','created_at',false),
+      fetchTableSafe('personal','*','created_at',false),
+      fetchTableSafe('compras','*','created_at',false),
+      fetchTableSafe('finanzas','*','created_at',false),
+      fetchTableSafe('laboratorio_tecnico','*','created_at',false),
+      fetchTableSafe('usuarios','*','nombre',true),
+      fetchTableSafe('presupuestos','*','created_at',false),
+      fetchTableSafe('auditoria','*','created_at',false,200)
+    ]);
+
+    data={clientes,vehiculos,ot,inv,per,compras,fin,lab,usuarios,presupuestos,auditoria};
+
+    cloudStatus.textContent='Conectado';
+    cloudStatus.className='green';
+
+    try{
+      render();
+    }catch(renderError){
+      console.error('Error al renderizar dashboard/app:',renderError);
+      msg('La base cargó, pero había un error al dibujar el dashboard: '+renderError.message);
+    }
+  }catch(e){
+    cloudStatus.textContent='Error';
+    cloudStatus.className='red';
+    msg('Error Supabase: '+e.message);
+    console.error(e);
+  }
+}
 function renderSelects(){vehCliente.innerHTML='<option value="">Cliente asociado</option>'+data.clientes.map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('');otCliente.innerHTML='<option value="">Cliente</option>'+data.clientes.map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('');otVehiculo.innerHTML='<option value="">Vehículo</option>'+data.vehiculos.map(v=>`<option value="${v.id}">${v.dominio||''} · ${v.modelo||''} ${v.version||''}</option>`).join('');repuestosList.innerHTML=data.inv.map(i=>`<option value="${i.producto}">${i.categoria||''} · Stock ${i.stock||0} · Venta ${fmt(i.precio_venta||0)}</option>`).join(''); if(window.preOT) preOT.innerHTML='<option value="">OT asociada</option>'+data.ot.map(o=>`<option value="${o.id}">${o.numero_ot||''}</option>`).join('')}
 function norm(v){return String(v||'').trim().toLowerCase()}
 function finances(){
