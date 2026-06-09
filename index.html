@@ -106,6 +106,24 @@
   .top{padding-right:150px!important}
 }
 
+
+/* ===== V10.4 KPIs PROLIJOS + PERÍODOS MENSUALES ===== */
+.periodBar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(145deg,#101417,#080b0e)}
+.periodBar .periodTitle{font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:#dfe6ec}
+.periodControls{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.periodControls select,.periodControls input{height:34px;min-width:130px}
+.kpiHeader{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.kpiHeader h3{margin:0;text-transform:uppercase;font-size:13px}
+.kpiHeader small{color:var(--muted);font-weight:900;text-transform:uppercase}
+.kpiPanel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:10px}
+.kpiMini{border:1px solid #26313a;border-radius:12px;background:#080c10;padding:12px;min-height:82px}
+.kpiMini span{display:block;color:#aeb8c2;text-transform:uppercase;font-size:9px;font-weight:900;letter-spacing:.4px}
+.kpiMini b{display:block;margin-top:8px;font-size:20px;color:#fff;line-height:1}
+.kpiMini em{display:block;margin-top:8px;color:#9aa6b2;font-style:normal;font-size:10px}
+.monthNote{border-left:4px solid var(--red);background:#090d11;border-radius:10px;padding:10px;color:#d9e0e7;line-height:1.45;margin-bottom:10px}
+@media(max-width:1366px){.kpiPanel{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.periodBar{align-items:flex-start;flex-direction:column}.kpiPanel{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -131,6 +149,14 @@
 <main class="main">
 <header class="top"><div class="title"><h1>Laboratorio Toyota<strong>Martín Menéndez</strong></h1><p>Plataforma de gestión técnica automotriz</p></div><div class="cloud"><div>Estado Supabase:<b id="cloudStatus">Conectando...</b></div><div class="userBox"><span id="userName">Usuario</span><b id="userRole">Rol</b><button class="logoutBtn" onclick="logout()">Cerrar sesión</button></div></div></header>
 
+<div class="periodBar">
+  <div><div class="periodTitle">Período de gestión</div><small id="periodLabel" style="color:#a8b1ba">Mes actual</small></div>
+  <div class="periodControls">
+    <select id="periodMonth" onchange="setPeriodFromControls()"></select>
+    <select id="periodYear" onchange="setPeriodFromControls()"></select>
+    <button class="btn clean" onclick="goCurrentMonth()">Mes actual</button>
+  </div>
+</div>
 <section id="dash" class="section active">
 <div class="grid kpis"><div class="card kpi"><div class="ico iRed">🚗</div><div><h3 id="kVeh">0</h3><p>Vehículos</p></div></div><div class="card kpi"><div class="ico iOrange">🔧</div><div><h3 id="kOt">0</h3><p>OT activas</p></div></div><div class="card kpi"><div class="ico iGreen">✓</div><div><h3 id="kFin">0</h3><p>Finalizadas</p></div></div><div class="card kpi"><div class="ico iBlue">$</div><div><h3 id="kFac">$0</h3><p>Facturación</p></div></div><div class="card kpi"><div class="ico iPurple">$</div><div><h3 id="kGas">$0</h3><p>Gastos</p></div></div><div class="card kpi"><div class="ico iGreen">▰</div><div><h3 id="kGan">$0</h3><p>Ganancia</p></div></div></div>
 <div class="grid two"><div class="card"><div class="head"><h2>Órdenes activas</h2><button class="link" onclick="go('ot')">Ver todas</button></div><table><thead><tr><th>OT</th><th>Cliente</th><th>Vehículo</th><th>Estado</th><th>Técnico/s</th></tr></thead><tbody id="dashOT"></tbody></table></div><div class="card"><div class="head"><h2>Productividad</h2><button class="link" onclick="go('kpis')">Reporte</button></div><table><thead><tr><th>Operario</th><th>Trabajos</th><th>Horas</th><th>Facturado</th></tr></thead><tbody id="dashProd"></tbody></table></div></div>
@@ -153,7 +179,19 @@
 
 <section id="lab" class="section"><h2 class="moduleTitle">Laboratorio Técnico</h2><div class="card"><div class="notice">Base de conocimiento Toyota. Buscá por problema, modelo, solución o técnico.</div><br><div class="form twoCol"><input id="labModelo" placeholder="Modelo"><input id="labProblema" placeholder="Problema"><textarea id="labDiag" placeholder="Diagnóstico"></textarea><textarea id="labSol" placeholder="Solución"></textarea><input id="labTecnico" placeholder="Técnico"><input id="labRep" placeholder="Reparaciones asociadas"></div><div class="actions"><button class="btn primary" onclick="saveLab()">Agregar / Guardar</button><button class="btn danger" onclick="del('lab')">Eliminar</button><button class="btn clean" onclick="clearLab()">Limpiar</button></div><input class="search" id="searchLab" oninput="render()" placeholder="Buscar caso"><table><thead><tr><th>Modelo</th><th>Problema</th><th>Diagnóstico</th><th>Solución</th><th>Técnico</th><th>Acción</th></tr></thead><tbody id="labTable"></tbody></table></div></section>
 
-<section id="kpis" class="section"><h2 class="moduleTitle">Reportes / KPIs</h2><div class="grid two"><div class="card"><div class="head"><h3>Productividad quincenal</h3></div><div id="kpiOperarios"></div></div><div class="card"><div class="head"><h3>Indicadores</h3></div><div id="kpiTecnicos"></div></div></div></section>
+<section id="kpis" class="section"><h2 class="moduleTitle">Reportes / KPIs</h2>
+<div class="monthNote"><b>Control mensual:</b> los indicadores se calculan por el mes seleccionado. Al iniciar un nuevo mes, facturación, gastos, ganancia, compras, OT finalizadas y productividad visual arrancan en cero para ese período, manteniendo el historial de meses anteriores.</div>
+<div class="kpiPanel" id="kpiResumenMensual"></div>
+<div class="grid two">
+  <div class="card"><div class="kpiHeader"><h3>Productividad quincenal</h3><small id="kpiQuincenaLabel"></small></div><div id="kpiOperarios"></div></div>
+  <div class="card"><div class="kpiHeader"><h3>Indicadores mensuales</h3><small id="kpiMesLabel"></small></div><div id="kpiTecnicos"></div></div>
+</div>
+<br>
+<div class="grid two">
+  <div class="card"><div class="kpiHeader"><h3>Finanzas del mes</h3><small>Ingresos / gastos / ganancia</small></div><div id="kpiFinanzasMes"></div></div>
+  <div class="card"><div class="kpiHeader"><h3>Meses con registro</h3><small>Histórico</small></div><div id="kpiMesesHistorial"></div></div>
+</div>
+</section>
 <section id="usuariosSec" class="section devOnly"><h2 class="moduleTitle">Usuarios del Sistema</h2><div class="card"><div class="notice">Módulo visible solo para el rol Dueño Desarrollador. Los usuarios reales se administran desde Supabase Authentication; esta tabla muestra los perfiles y roles cargados en public.usuarios.</div><br><table><thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Activo</th></tr></thead><tbody id="usuariosTable"></tbody></table></div></section>
 
 <section id="configSec" class="section devOnly"><h2 class="moduleTitle">Configuración</h2><div class="card"><div class="notice"><b>Laboratorio Martín Menéndez.</b><br>Estado: conectado a Supabase. Base: clientes, vehículos, órdenes de trabajo, inventario, compras, finanzas, personal, laboratorio técnico y usuarios.</div></div></section>
@@ -162,7 +200,7 @@
 <section id="presupuestos" class="section"><h2 class="moduleTitle">Presupuestos</h2><div class="card"><div class="notice">Seleccioná la OT asociada: el sistema completa automáticamente cliente, vehículo, patente/dominio, kilometraje, combustible, versión/motor, año, detalle, repuestos, mano de obra y total. La validez es opcional y se carga manualmente.</div><br><div class="form five"><input id="preNumero" placeholder="Número presupuesto"><select id="preOT" onchange="fillPresupuestoFromSelect()"></select><input id="preCliente" placeholder="Cliente" readonly><input id="preVehiculo" placeholder="Vehículo" readonly><select id="preEstado"><option>Pendiente</option><option>Aprobado</option><option>Rechazado</option></select><input id="preManoObra" type="number" placeholder="Mano de obra" oninput="recalcularPresupuesto()"><input id="preRepuestos" type="number" placeholder="Repuestos" oninput="recalcularPresupuesto()"><label class="checkLine"><input id="preIva" type="checkbox" onchange="recalcularPresupuesto()"> Aplicar IVA 21%</label><input id="preTotal" type="number" placeholder="Total" readonly><input id="preValidez" type="date" title="Validez opcional"></div><div class="vehInfoBox"><div class="vehInfoTitle">Datos del vehículo vinculados a la OT</div><div class="vehInfoGrid"><input id="preDominio" placeholder="Patente / dominio" readonly><input id="preAnio" placeholder="Año" readonly><input id="preVersion" placeholder="Versión / motor" readonly><input id="preKm" placeholder="Kilometraje" readonly><input id="preCombustible" placeholder="Combustible" readonly></div></div><div class="form twoCol"><textarea id="preDetalle" placeholder="Diagnóstico técnico / detalle del presupuesto"></textarea><textarea id="preObs" placeholder="Observaciones libres"></textarea></div><div class="actions"><button class="btn primary" onclick="savePresupuesto()">Guardar presupuesto</button><button class="btn" onclick="printPresupuesto()">Generar presupuesto</button><button class="btn danger" onclick="del('presupuestos')">Eliminar</button><button class="btn clean" onclick="clearPresupuesto()">Limpiar</button></div><input class="search" id="searchPresupuestos" oninput="render()" placeholder="Buscar presupuesto, OT, cliente, vehículo o estado"><table><thead><tr><th>N°</th><th>OT</th><th>Cliente</th><th>Vehículo</th><th>Estado</th><th>Total</th><th>Validez</th><th>Acción</th></tr></thead><tbody id="presupuestosTable"></tbody></table></div></section>
 
 <section id="historial" class="section"><h2 class="moduleTitle">Historial / Auditoría</h2><div class="card"><div class="notice">Registro de acciones del sistema: altas, modificaciones, eliminaciones, presupuestos, ingresos por OT y operaciones críticas.</div><br><input class="search" id="searchHistorial" oninput="render()" placeholder="Buscar por usuario, módulo, acción, detalle o fecha"><table><thead><tr><th>Fecha</th><th>Usuario</th><th>Rol</th><th>Módulo</th><th>Acción</th><th>Detalle</th></tr></thead><tbody id="historialTable"></tbody></table></div></section>
-<datalist id="repuestosList"></datalist><div class="footer">© 2026 Laboratorio Martín Menéndez · V9.4 Presupuestos</div>
+<datalist id="repuestosList"></datalist><div class="footer">© 2026 Laboratorio Martín Menéndez · V10.4 KPIs mensuales</div>
 </main>
 </div>
 <div class="toast" id="toast"></div>
@@ -296,6 +334,8 @@ db.auth.onAuthStateChange(async (event,session)=>{
 });
 
 document.addEventListener('DOMContentLoaded',()=>{
+  initPeriodControls();
+  if(window.periodLabel)periodLabel.textContent=periodLabelText();
   el('loginPassword')?.addEventListener('keydown',(e)=>{ if(e.key==='Enter') login(); });
   el('loginEmail')?.addEventListener('keydown',(e)=>{ if(e.key==='Enter') login(); });
   initAuth();
@@ -303,6 +343,39 @@ document.addEventListener('DOMContentLoaded',()=>{
 const $=id=>document.getElementById(id), fmt=n=>'$ '+Math.round(+n||0).toLocaleString('es-AR');
 let data={clientes:[],vehiculos:[],ot:[],inv:[],per:[],compras:[],fin:[],lab:[],presupuestos:[],auditoria:[]};
 let edit={clientes:null,vehiculos:null,ot:null,inv:null,per:null,compras:null,fin:null,lab:null,presupuestos:null};
+let selectedPeriod=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+function periodRange(){return monthRange(selectedPeriod)}
+function periodKeyFromDate(v){const d=parseDateSafe(v);return d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`:''}
+function periodLabelText(d=selectedPeriod){return d.toLocaleDateString('es-AR',{month:'long',year:'numeric'})}
+function initPeriodControls(){
+  if(!window.periodMonth||!window.periodYear)return;
+  const meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  periodMonth.innerHTML=meses.map((m,i)=>`<option value="${i}">${m}</option>`).join('');
+  const y=new Date().getFullYear();
+  periodYear.innerHTML=Array.from({length:7},(_,i)=>y-3+i).map(v=>`<option value="${v}">${v}</option>`).join('');
+  periodMonth.value=selectedPeriod.getMonth();
+  periodYear.value=selectedPeriod.getFullYear();
+}
+function setPeriodFromControls(){
+  selectedPeriod=new Date(+periodYear.value,+periodMonth.value,1);
+  if(window.periodLabel)periodLabel.textContent=periodLabelText();
+  render();
+}
+function goCurrentMonth(){
+  selectedPeriod=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+  initPeriodControls();
+  if(window.periodLabel)periodLabel.textContent=periodLabelText();
+  render();
+}
+function currentMonthRows(rows,dateGetter){const r=periodRange();return (rows||[]).filter(x=>inRangeDate(dateGetter(x),r.start,r.end))}
+function monthKeys(){
+  const keys=new Set();
+  [...(data.fin||[])].forEach(x=>{const k=periodKeyFromDate(finDate(x));if(k)keys.add(k)});
+  [...(data.ot||[])].forEach(x=>{const k=periodKeyFromDate(otDate(x));if(k)keys.add(k)});
+  [...(data.compras||[])].forEach(x=>{const k=periodKeyFromDate(x.fecha||x.created_at);if(k)keys.add(k)});
+  return [...keys].sort().reverse();
+}
+
 function msg(t){toast.textContent=t;toast.style.display='block';setTimeout(()=>toast.style.display='none',2500)}
 async function audit(modulo,accion,detalle,ref){try{await db.from('auditoria').insert({usuario_id:currentUser?.id||null,usuario_email:currentUser?.email||'',usuario_nombre:currentProfile?.nombre||'',rol:currentProfile?.rol||'',modulo,accion,detalle,referencia:ref||''})}catch(e){console.warn('Auditoría no registrada',e.message)}}
 function show(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
@@ -406,7 +479,7 @@ function inRangeDate(v,start,end){
 function finDate(x){return x.fecha||x.created_at||x.fecha_ingreso||x.fecha_entrega}
 function otDate(o){return o.fecha_entrega||o.fecha_ingreso||o.created_at}
 function finances(){
-  const {start,end}=monthRange();
+  const {start,end}=periodRange();
   const finMes=data.fin.filter(x=>inRangeDate(finDate(x),start,end));
   let ingresosFin=finMes.filter(x=>norm(x.tipo)==='ingreso' || norm(x.origen)==='ot').reduce((a,b)=>a+(+b.monto||0),0);
   let fijos=finMes.filter(x=>norm(x.tipo)==='gasto fijo').reduce((a,b)=>a+(+b.monto||0),0);
@@ -422,7 +495,7 @@ function finances(){
   return{ingresos,fijos,vars,gastos:fijos+vars,inicio:start,fin:end}
 }
 function prod(scope='month'){
-  const range=scope==='fortnight'?fortnightRange():monthRange();
+  const range=scope==='fortnight'?fortnightRange():periodRange();
   let p={};
   data.ot
     .filter(o=>inRangeDate(otDate(o),range.start,range.end))
@@ -449,8 +522,8 @@ function renderPagoQuincenal(pq){
     return `<div class="metric"><span>${n}</span><b>${v.trab} trabajos · ${v.horas} hs · ${fmt(v.monto)} fact. · Quincena ${fmt(sueldo)} · Plus ${fmt(plus)} · Total ${fmt(total)}</b></div>`;
   }).join('');
 }
-function render(){renderSelects();renderSelectedParts();let f=finances(),p=prod(),act=data.ot.filter(x=>!['Finalizado','Entregado'].includes(x.estado));kVeh.textContent=data.vehiculos.length;kOt.textContent=act.length;kFin.textContent=data.ot.filter(x=>['Finalizado','Entregado'].includes(x.estado)).length;kFac.textContent=fmt(f.ingresos);kGas.textContent=fmt(f.gastos);kGan.textContent=fmt(f.ingresos-f.gastos);
-dashOT.innerHTML=act.slice(0,5).map(o=>`<tr><td>${o.numero_ot}</td><td>${o.cliente_texto||''}</td><td>${o.vehiculo_texto||''}</td><td>${badge(o.estado)}</td><td>${o.tecnicos||''}</td></tr>`).join('');dashProd.innerHTML=Object.entries(p).map(([n,v])=>`<tr><td>${n}</td><td>${v.trab}</td><td>${v.horas}</td><td>${fmt(v.monto)}</td></tr>`).join('');
+function render(){renderSelects();renderSelectedParts();let f=finances(),p=prod(),r=periodRange(),otMes=currentMonthRows(data.ot,otDate),comprasMes=currentMonthRows(data.compras,x=>x.fecha||x.created_at),act=data.ot.filter(x=>!['Finalizado','Entregado'].includes(x.estado));let finalMes=otMes.filter(x=>['Finalizado','Entregado'].includes(x.estado));kVeh.textContent=data.vehiculos.length;kOt.textContent=act.length;kFin.textContent=finalMes.length;kFac.textContent=fmt(f.ingresos);kGas.textContent=fmt(f.gastos);kGan.textContent=fmt(f.ingresos-f.gastos);if(window.periodLabel)periodLabel.textContent=periodLabelText();
+dashOT.innerHTML=act.slice(0,5).map(o=>`<tr><td>${o.numero_ot}</td><td>${o.cliente_texto||''}</td><td>${o.vehiculo_texto||''}</td><td>${badge(o.estado)}</td><td>${o.tecnicos||''}</td></tr>`).join('');dashProd.innerHTML=Object.entries(p).map(([n,v])=>`<tr><td>${n}</td><td>${v.trab}</td><td>${v.horas}</td><td>${fmt(v.monto)}</td></tr>`).join('')||'<tr><td colspan="4">Sin productividad en el mes seleccionado</td></tr>';
 let probs={};data.lab.forEach(x=>probs[x.problema]=(probs[x.problema]||0)+1);fallas.innerHTML=(Object.entries(probs).length?Object.entries(probs):[['Sin casos cargados',0]]).slice(0,5).map(([n,c],i)=>`<div class="metric"><span>${i+1}. ${n}</span><b>${c}</b></div>`).join('');
 let sin=data.inv.filter(x=>+x.stock<=0).length,low=data.inv.filter(x=>+x.stock>0&&+x.stock<=+x.stock_minimo).length,ok=data.inv.length-sin-low;invPills.innerHTML=`<div class="pill stock0"><b>${sin}</b><small>Sin stock</small></div><div class="pill stockLow"><b>${low}</b><small>Stock bajo</small></div><div class="pill stockOk"><b>${ok}</b><small>Stock OK</small></div>`;reminders.innerHTML=data.inv.filter(x=>+x.stock<=+x.stock_minimo).slice(0,4).map(x=>`<div class="metric"><span>${x.producto}</span><b class="red">Comprar</b></div>`).join('')||'<div class="metric"><span>Sin alertas</span><b class="green">OK</b></div>';finStatus.innerHTML=`<div class="metric"><span>Ingresos</span><b class="green">${fmt(f.ingresos)}</b></div><div class="metric"><span>Gastos fijos</span><b class="red">${fmt(f.fijos)}</b></div><div class="metric"><span>Gastos variables</span><b class="red">${fmt(f.vars)}</b></div><div class="metric"><span>Total gastos</span><b class="red">${fmt(f.gastos)}</b></div><div class="metric"><span>Ganancia</span><b class="${f.ingresos-f.gastos>=0?'green':'red'}">${fmt(f.ingresos-f.gastos)}</b></div>`;
 clientesTable.innerHTML=data.clientes.filter(o=>match(o,searchClientes.value)).map(o=>`<tr><td>${o.nombre}</td><td>${o.dni_cuit||''}</td><td>${o.telefono||''}</td><td>${o.email||''}</td><td>${o.direccion||''}</td><td>${data.vehiculos.filter(v=>v.cliente_id===o.id).length}</td><td><button class="btn" onclick="editCliente('${o.id}')">Editar</button></td></tr>`).join('');
@@ -459,7 +532,7 @@ invTable.innerHTML=data.inv.filter(o=>match(o,searchInv.value)).map(o=>`<tr><td>
 perTable.innerHTML=data.per.filter(o=>match(o,searchPer.value)).map(o=>`<tr><td>${o.nombre}</td><td>${o.apellido||''}</td><td>${o.dni||''}</td><td>${o.contacto||''}</td><td>${o.cargo||''}</td><td>${p[o.nombre]?.trab||0}</td><td><button class="btn" onclick="editPer('${o.id}')">Editar</button></td></tr>`).join('');
 let lanes=['Diagnóstico','En reparación','Esperando repuestos','Finalizado'];kanbanOT.innerHTML=lanes.map(l=>`<div class="lane"><h4>${l}</h4>${data.ot.filter(o=>o.estado===l).slice(0,4).map(o=>`<div class="miniOT"><b>${o.numero_ot} · ${o.cliente_texto||''}</b>${o.vehiculo_texto||''}<br>${o.reparaciones||''}</div>`).join('')||'<div class="miniOT">Sin trabajos</div>'}</div>`).join('');
 otTable.innerHTML=data.ot.filter(o=>match(o,searchOT.value)).map(o=>`<tr><td>${o.numero_ot}</td><td>${o.cliente_texto||''}</td><td>${o.vehiculo_texto||''}</td><td>${badge(o.estado)}</td><td>${o.reparaciones||''}</td><td>${o.tecnicos||''}</td><td>${fmt(o.monto_facturado)}</td><td><button class="btn" onclick="editOT('${o.id}')">Editar</button></td></tr>`).join('');
-comprasTable.innerHTML=data.compras.filter(o=>match(o,searchCompras.value)).map(o=>`<tr><td>${o.fecha||''}</td><td>${o.proveedor||''}</td><td>${o.producto||''}</td><td>${o.cantidad||0}</td><td>${fmt(o.costo_unitario)}</td><td>${fmt((+o.cantidad||0)*(+o.costo_unitario||0))}</td><td>${o.forma_pago||''}</td><td><button class="btn" onclick="editCompra('${o.id}')">Editar</button></td></tr>`).join('');
+comprasTable.innerHTML=comprasMes.filter(o=>match(o,searchCompras.value)).map(o=>`<tr><td>${o.fecha||''}</td><td>${o.proveedor||''}</td><td>${o.producto||''}</td><td>${o.cantidad||0}</td><td>${fmt(o.costo_unitario)}</td><td>${fmt((+o.cantidad||0)*(+o.costo_unitario||0))}</td><td>${o.forma_pago||''}</td><td><button class="btn" onclick="editCompra('${o.id}')">Editar</button></td></tr>`).join('');
 finTable.innerHTML=data.fin.filter(o=>inRangeDate(finDate(o),monthRange().start,monthRange().end)).filter(o=>match(o,searchFin.value)).map(o=>`<tr><td>${o.fecha||String(o.created_at||'').slice(0,10)||''}</td><td>${o.descripcion}</td><td>${o.tipo}</td><td>${o.categoria||''}</td><td>${fmt(o.monto)}</td><td><button class="btn" onclick="editFin('${o.id}')">Editar</button></td></tr>`).join('');
 labTable.innerHTML=data.lab.filter(o=>match(o,searchLab.value)).map(o=>`<tr><td>${o.modelo||''}</td><td>${o.problema}</td><td>${o.diagnostico||''}</td><td>${o.solucion||''}</td><td>${o.tecnico||''}</td><td><button class="btn" onclick="editLab('${o.id}')">Editar</button></td></tr>`).join('');
 let fq=prod('fortnight');
@@ -467,7 +540,12 @@ const mesTxt=f.inicio.toLocaleDateString('es-AR',{month:'long',year:'numeric'});
 breakEven.innerHTML=`<div class="metric"><span>Período visible</span><b class="blue">${mesTxt}</b></div><div class="metric"><span>Facturación del mes</span><b class="green">${fmt(f.ingresos)}</b></div><div class="metric"><span>Gastos fijos del mes</span><b class="red">${fmt(f.fijos)}</b></div><div class="metric"><span>Gastos variables del mes</span><b class="red">${fmt(f.vars)}</b></div><div class="metric"><span>Ganancia neta del mes</span><b class="${f.ingresos-f.gastos>=0?'green':'red'}">${fmt(f.ingresos-f.gastos)}</b></div>`;kpiOperarios.innerHTML=renderPagoQuincenal(fq);if(window.usuariosTable)usuariosTable.innerHTML=(data.usuarios||[]).map(u=>`<tr><td>${u.nombre||''}</td><td>${u.email||''}</td><td>${roleLabel(u.rol||'')}</td><td>${u.activo?'Sí':'No'}</td></tr>`).join('');
 if(window.presupuestosTable)presupuestosTable.innerHTML=(data.presupuestos||[]).filter(o=>match(o,searchPresupuestos?.value||'')).map(o=>`<tr><td>${o.numero_presupuesto||''}</td><td>${o.numero_ot||''}</td><td>${o.cliente_texto||''}</td><td>${o.vehiculo_texto||''}</td><td>${badge(o.estado||'Pendiente')}</td><td>${fmt(o.total)}</td><td>${o.validez_hasta||''}</td><td><button class="btn" onclick="editPresupuesto('${o.id}')">Editar</button></td></tr>`).join('');
 if(window.historialTable)historialTable.innerHTML=(data.auditoria||[]).filter(o=>match(o,searchHistorial?.value||'')).map(o=>`<tr><td>${new Date(o.created_at).toLocaleString('es-AR')}</td><td>${o.usuario_nombre||o.usuario_email||''}</td><td>${roleLabel(o.rol||'')}</td><td>${o.modulo||''}</td><td>${o.accion||''}</td><td>${o.detalle||''}</td></tr>`).join('');
-kpiTecnicos.innerHTML=`<div class="metric"><span>Clientes</span><b>${data.clientes.length}</b></div><div class="metric"><span>Vehículos</span><b>${data.vehiculos.length}</b></div><div class="metric"><span>Órdenes</span><b>${data.ot.length}</b></div><div class="metric"><span>Inventario</span><b>${data.inv.length}</b></div><div class="metric"><span>Casos técnicos</span><b>${data.lab.length}</b></div>`}
+if(window.kpiResumenMensual)kpiResumenMensual.innerHTML=`<div class="kpiMini"><span>Facturación mes</span><b class="green">${fmt(f.ingresos)}</b><em>${periodLabelText()}</em></div><div class="kpiMini"><span>Gastos mes</span><b class="red">${fmt(f.gastos)}</b><em>Fijos ${fmt(f.fijos)} · Variables ${fmt(f.vars)}</em></div><div class="kpiMini"><span>Ganancia mes</span><b class="${f.ingresos-f.gastos>=0?'green':'red'}">${fmt(f.ingresos-f.gastos)}</b><em>Resultado neto mensual</em></div><div class="kpiMini"><span>OT finalizadas mes</span><b>${finalMes.length}</b><em>${otMes.length} OT registradas</em></div>`;
+if(window.kpiMesLabel)kpiMesLabel.textContent=periodLabelText();
+if(window.kpiQuincenaLabel){const fr=fortnightRange();kpiQuincenaLabel.textContent=fr.start.toLocaleDateString('es-AR')+' al '+new Date(fr.end.getTime()-86400000).toLocaleDateString('es-AR')}
+if(window.kpiFinanzasMes)kpiFinanzasMes.innerHTML=`<div class="metric"><span>Ingresos registrados</span><b class="green">${fmt(f.ingresos)}</b></div><div class="metric"><span>Gastos fijos</span><b class="red">${fmt(f.fijos)}</b></div><div class="metric"><span>Gastos variables</span><b class="red">${fmt(f.vars)}</b></div><div class="metric"><span>Compras registradas en el mes</span><b>${comprasMes.length}</b></div><div class="metric"><span>Ganancia neta</span><b class="${f.ingresos-f.gastos>=0?'green':'red'}">${fmt(f.ingresos-f.gastos)}</b></div>`;
+if(window.kpiMesesHistorial)kpiMesesHistorial.innerHTML=(monthKeys().length?monthKeys().map(k=>`<div class="metric"><span>${k}</span><b>${k===String(selectedPeriod.getFullYear())+'-'+String(selectedPeriod.getMonth()+1).padStart(2,'0')?'Seleccionado':'Disponible'}</b></div>`).join(''):'<div class="metric"><span>Sin historial mensual</span><b>0</b></div>');
+kpiTecnicos.innerHTML=`<div class="metric"><span>Clientes totales</span><b>${data.clientes.length}</b></div><div class="metric"><span>Vehículos totales</span><b>${data.vehiculos.length}</b></div><div class="metric"><span>Órdenes del mes</span><b>${otMes.length}</b></div><div class="metric"><span>Órdenes finalizadas del mes</span><b>${finalMes.length}</b></div><div class="metric"><span>Compras del mes</span><b>${comprasMes.length}</b></div><div class="metric"><span>Inventario actual</span><b>${data.inv.length}</b></div>`}
 async function upsert(table,payload,id){let q=id?db.from(table).update(payload).eq('id',id):db.from(table).insert(payload);let {error}=await q;if(error)throw error;await audit(table,id?'Actualización':'Alta',(id?'Actualizó ':'Cargó ')+table,id);msg(id?'Registro actualizado':'Registro cargado');await loadAll()}
 async function remove(table,id){let {error}=await db.from(table).delete().eq('id',id);if(error)throw error;await audit(table,'Eliminación','Eliminó registro',id);msg('Registro eliminado');await loadAll()}
 function selected(t){if(!edit[t])return msg('Primero seleccioná Editar');return true}
