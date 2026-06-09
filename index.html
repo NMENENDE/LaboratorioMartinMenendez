@@ -83,7 +83,7 @@
 </nav>
 </aside>
 <main class="main">
-<header class="top"><div class="title"><h1>Laboratorio Toyota<strong>Martín Menéndez</strong></h1><p>Plataforma de gestión técnica automotriz</p></div><div class="cloud"><div>Estado Supabase:<b id="cloudStatus">Conectando...</b></div><div class="userBox"><span id="userName">Usuario</span><b id="userRole">Rol</b><button class="logoutBtn" onclick="logout()">Cerrar sesión</button></div></div></header>
+<header class="top"><div class="title"><h1>Laboratorio<strong>Martín Menéndez</strong></h1><p>Plataforma de gestión técnica automotriz</p></div><div class="cloud"><div>Estado Supabase:<b id="cloudStatus">Conectando...</b></div><div class="userBox"><span id="userName">Usuario</span><b id="userRole">Rol</b><button class="logoutBtn" onclick="logout()">Cerrar sesión</button></div></div></header>
 
 <section id="dash" class="section active">
 <div class="grid kpis"><div class="card kpi"><div class="ico iRed">🚗</div><div><h3 id="kVeh">0</h3><p>Vehículos</p></div></div><div class="card kpi"><div class="ico iOrange">🔧</div><div><h3 id="kOt">0</h3><p>OT activas</p></div></div><div class="card kpi"><div class="ico iGreen">✓</div><div><h3 id="kFin">0</h3><p>Finalizadas</p></div></div><div class="card kpi"><div class="ico iBlue">$</div><div><h3 id="kFac">$0</h3><p>Facturación</p></div></div><div class="card kpi"><div class="ico iPurple">$</div><div><h3 id="kGas">$0</h3><p>Gastos</p></div></div><div class="card kpi"><div class="ico iGreen">▰</div><div><h3 id="kGan">$0</h3><p>Ganancia</p></div></div></div>
@@ -556,20 +556,42 @@ async function saveClienteVehiculo(){
   }catch(e){msg(e.message);console.error(e)}
 }
 
+async function descontarStockRepuestosOT(num){
+  for(const p of (selectedOtParts||[])){
+    const item=findPartByName(p.producto);
+    if(!item) continue;
+    const nuevoStock=Math.max((+item.stock||0)-(+p.cant||0),0);
+    await db.from('inventario').update({stock:nuevoStock}).eq('id',item.id);
+  }
+}
+
 async function saveOT(){
   try{
     let num=otNumero.value||`OT-${String(data.ot.length+1).padStart(4,'0')}`;
     const manoObra=+otMonto.value||0;
     const repuestosVenta=otPartsSaleTotal();
+    const repuestosCosto=otPartsCostTotal();
     const totalFacturado=manoObra+repuestosVenta;
+    const fechaMovimiento=otEntrega.value||otIngreso.value||new Date().toISOString().slice(0,10);
     let payload={numero_ot:num,cliente_id:otCliente.value||null,vehiculo_id:otVehiculo.value||null,cliente_texto:clienteName(otCliente.value),vehiculo_texto:vehText(otVehiculo.value),estado:otEstado.value,reparaciones:otReparaciones.value,tecnicos:otTecnicos.value,repuestos_usados:otRepuestos.value,horas_reales:+otHoras.value||0,monto_facturado:totalFacturado,fecha_ingreso:otIngreso.value||new Date().toISOString().slice(0,10),fecha_entrega:otEntrega.value||null,observaciones:otObs.value};
     await upsert('ordenes_trabajo',payload,edit.ot);
-    await audit('ordenes_trabajo',edit.ot?'Actualización':'Alta',`${num} · Mano de obra ${fmt(manoObra)} + repuestos ${fmt(repuestosVenta)} = total ${fmt(totalFacturado)}`,num);
+    await audit('ordenes_trabajo',edit.ot?'Actualización':'Alta',`${num} · Mano de obra ${fmt(manoObra)} + repuestos vendidos ${fmt(repuestosVenta)} = total facturado ${fmt(totalFacturado)} · costo repuestos ${fmt(repuestosCosto)}`,num);
+
     if(['Finalizado','Entregado'].includes(payload.estado)&&payload.monto_facturado>0){
-      let ex=await db.from('finanzas').select('id').eq('origen','OT').eq('referencia',num).maybeSingle();
-      const finPayload={descripcion:'Facturación '+num,tipo:'Ingreso',categoria:'Órdenes de trabajo',monto:payload.monto_facturado,fecha:payload.fecha_entrega||payload.fecha_ingreso,origen:'OT',referencia:num};
-      if(ex.data?.id) await db.from('finanzas').update(finPayload).eq('id',ex.data.id);
-      else await db.from('finanzas').insert(finPayload);
+      let exIngreso=await db.from('finanzas').select('id').eq('origen','OT').eq('referencia',num).maybeSingle();
+      const ingresoPayload={descripcion:'Facturación '+num,tipo:'Ingreso',categoria:'Órdenes de trabajo',monto:payload.monto_facturado,fecha:fechaMovimiento,origen:'OT',referencia:num};
+      if(exIngreso.data?.id) await db.from('finanzas').update(ingresoPayload).eq('id',exIngreso.data.id);
+      else await db.from('finanzas').insert(ingresoPayload);
+
+      if(repuestosCosto>0){
+        let exCosto=await db.from('finanzas').select('id').eq('origen','OT_REPUESTOS').eq('referencia',num).maybeSingle();
+        const costoPayload={descripcion:'Costo repuestos utilizados '+num,tipo:'Gasto variable',categoria:'Repuestos utilizados en OT',monto:repuestosCosto,fecha:fechaMovimiento,origen:'OT_REPUESTOS',referencia:num};
+        if(exCosto.data?.id) await db.from('finanzas').update(costoPayload).eq('id',exCosto.data.id);
+        else{
+          await db.from('finanzas').insert(costoPayload);
+          await descontarStockRepuestosOT(num);
+        }
+      }
     }
     clearOT();await loadAll();
   }catch(e){msg(e.message);console.error(e)}
